@@ -1,17 +1,35 @@
+#ifndef MINMAXALPHABETA_H
 #define MINMAXALPHABETA_H
+
 #include <iostream>
 #include <vector>
 #include <queue>
 
+namespace alphaBeta{
+
 class MinMaxAlphaBeta {
+    /**
+    * Struct for hold path and desired value
+    */
+    struct some_struct {
+        int value;
+        std::vector<int> mpath;
+        some_struct() {
+            value = 0;
+            mpath = {0};
+        }
+
+    };
+
 public:
+
     /**
     * Recursively searches plausible moves down to depth.
     * Input: board position, current depth of search, and player to move
    *    max player = 1, min player = -1
     * Returns structure containing both (min or max) value and path to that value
     **/
-    some_struct miniMaxAlphaBeta(int, int, int, int, int);​
+    some_struct miniMaxAlphaBeta(int,int,int,int,int);
 
 private:
 
@@ -31,7 +49,7 @@ private:
    *    max player = 1, min player = -1
    * Output: queue of nodes
    **/
-    queue<int> moveGen(int, int );
+    std::queue<int> moveGen(int, int );
 
     /**
     * Static evaluation function returns "goodness" based on input.
@@ -41,11 +59,8 @@ private:
     */
     int staticEval1(int, int);
 
-    /**
-    * Struct for hold path and desired value
-    */
-    struct some_struct {
-        int value;​
-        vector<int> path;
-    };
+
+
 };
+} //end alphaBeta namespace
+#endif //MINMAXALPHABETA_H guard
