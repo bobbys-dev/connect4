@@ -1,5 +1,6 @@
 #include "connect4game.h"
 
+using namespace std;
 /**
 * Constructor creates a board game, which is a n x m grid
 * starting with empty values
