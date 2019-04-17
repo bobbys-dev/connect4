@@ -65,4 +65,3 @@ class Connect4Game {
 
 };
 #endif				//CONNECT4GAME_H guard
-
