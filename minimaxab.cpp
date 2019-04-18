@@ -7,16 +7,23 @@ MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }
 
-int MiniMaxAB::miniMaxSearch(int depth, int piece,int A,int B)
-{//Need to implement MinimaxAB algorithm
+int MiniMaxAB::Eval()
+{
+    return 2;
+}
+
+int MiniMaxAB::miniMaxSearch(MiniMaxAB board,int depth, int piece,int Alpha,int Beta)
+{
+
     if(deepEnough(depth))
     {
-        return 1;//Code need to be changed
+        return 0;//Code need to be changed
     }
     int bestValue;
     if(piece==1)//Maximizing Player
     {
         bestValue=INT_MIN;
+
 
 
 
@@ -29,20 +36,21 @@ int MiniMaxAB::miniMaxSearch(int depth, int piece,int A,int B)
 
     return 0;
 }
-void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int piece)
+void MiniMaxAB::humanVsComputerMinimaxAB(MiniMaxAB board,int depth,int peice)
 {
     int i=1;
     int columnNumber;
     while(i<=42)
     {
-        columnNumber = miniMaxSearch(depth,piece,100,-120);
-        this->board.dropPiece(columnNumber,piece);
+        columnNumber = miniMaxSearch(board,depth,peice,100,-120);
+        this->board.dropPiece(peice,columnNumber);
         cout<<"\nThe board position after computer's turn"<<endl;
         this->board.printBoard();
         checkWin();
+        peice=-1;
         cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
         cin>>columnNumber;
-        this->board.dropPiece(columnNumber,piece);
+        this->board.dropPiece(peice,columnNumber);
         this->board.printBoard();
         checkWin();
         i++;
@@ -57,6 +65,14 @@ bool MiniMaxAB::deepEnough(int d)
 void MiniMaxAB::checkWin()
 {
  //add check win logic
+}
+void MiniMaxAB::printGameBoard()
+{
+   this->board.printBoard();
+}
+void MiniMaxAB::clearGameBoard()
+{
+    this->board.clearBoard();
 }
 
 } //end namespace AB

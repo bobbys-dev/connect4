@@ -12,13 +12,11 @@ class MiniMaxAB {
 
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
-        void humanVsComputerMinimaxAB(int,int);
+        void humanVsComputerMinimaxAB(MiniMaxAB,int,int);
 
-        /** Function for Human vs Computer using AlphaBetaSearch */
-        void humanVsComputerAlphaBetaSearch();
 
         /** Function for MinimaxAB algorithm*/
-        int miniMaxSearch(int,int,int,int);
+        int miniMaxSearch(MiniMaxAB,int,int,int,int);
 
         /**
         * Check if max depth is reached
@@ -31,6 +29,12 @@ class MiniMaxAB {
 
         /**Function to check if a player has won*/
         void checkWin();
+
+        /**Function which evaluates the board position and returns the number*/
+        int Eval();
+
+        void printGameBoard();
+        void clearGameBoard();
 
     private:
         Connect4Game board;
