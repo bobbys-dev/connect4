@@ -1,6 +1,11 @@
 #include <iostream>
 #include "connect4game.h"
+<<<<<<< HEAD
 #include "MinimaxAB.h"
+=======
+#include "minimaxalphabeta.h"
+#include "minimaxalphabeta.h"
+>>>>>>> e4b84ffb0112e06b6c118af5f515c7a85ef72beb
 using namespace std;
 
 int main()
@@ -45,6 +50,11 @@ int main()
 //        board.printBoard();
 //        player *= -1;
 //    }
+
+    // create AB object and test minmaxAB functions
+    MiniMaxAB ab;
+    // do ab.someFunction()
+
 
     return 0;
 }
