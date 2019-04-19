@@ -2,11 +2,11 @@
 
 using namespace std;
 
-namespace alphaBeta {
-MinMaxAlphaBeta::some_struct MinMaxAlphaBeta::miniMaxAlphaBeta(
-    int position, int depth, int player, int use_thres, int pass_thresh) {
+namespace AI {
+AlphaBeta::some_struct AlphaBeta::alphaBetaSearch(
+    Connect4Game board) {
         some_struct s;
         return s;
     }
 
-}
+} // end namespace AI

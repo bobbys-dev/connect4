@@ -4,10 +4,11 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include "connect4game.h"
 
-namespace alphaBeta{
+namespace AI{
 
-class MinMaxAlphaBeta {
+class AlphaBeta {
     /**
     * Struct for hold path and desired value
     */
@@ -24,43 +25,46 @@ class MinMaxAlphaBeta {
 public:
 
     /**
-    * Recursively searches plausible moves down to depth.
-    * Input: board position, current depth of search, and player to move
-   *    max player = 1, min player = -1
+    * Recursively searches plausible moves down to cutoff depth. THe minimax values
+    * are backed up through tree as recursion unwinds
+    * Input: board state
     * Returns structure containing both (min or max) value and path to that value
     **/
-    some_struct miniMaxAlphaBeta(int,int,int,int,int);
+    some_struct alphaBetaSearch(Connect4Game);
 
 private:
+   Connect4Game board; //actual state of board
 
    /**
-   * Check if search depth has been reached based on positino and depth.
+   * Check if search depth has been reached based on board state and depth.
    * It will ignore its position parameter and simply return TRUE if its
    * depth parameter exceeds a constant cutoff value.​
    * Input: board position, current depth of search
-   * Output: TRUE if search should be stopped at current level, else FALSE.
+   * Output: true for all depth greater than some fixed depth d.
+   * true for all terminal states eg when game is over. false otherwise
    **/
-   bool deepEnough(int, int);
+   bool cutoffTest(Connect4Game, int);
 
-    /**
-   * Plausible-move generator, which returns queue list of nodes representing
-   *  moves that can be made by Player in Position.
-   * Input: board position,  and player to move
-   *    max player = 1, min player = -1
-   * Output: queue of nodes
+   /**
+   * maxValue returns a utility value given game state and alpha beta
+   * Input: game board state, integers alpha and beta.
+   * It uses one of the evaluation functions
+   * contained in board game to determine utility value
+   * Output: integer representing utility value
    **/
-    std::queue<int> moveGen(int, int );
+   int maxValue(Connect4Game);
 
-    /**
-    * Static evaluation function returns "goodness" based on input.
-    * position: position of player
-    *    max player = 1, min player = -1
-    * returns: number representing goodness of position from standpoint of player
-    */
-    int staticEval1(int, int);
+   /**
+   * minValue returns a utility value given game state and alpha beta
+   * It uses one of the evaluation functions
+   * contained in board game to determine utility value
+   * Input: game board state, integers alpha and beta
+   * Output: integer representing utility value
+   **/
+   int minValue(Connect4Game);
 
 
 
 };
-} //end alphaBeta namespace
+} //end AI namespace
 #endif //MINMAXALPHABETA_H guard
