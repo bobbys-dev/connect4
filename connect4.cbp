@@ -32,11 +32,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="MinimaxAB.cpp" />
 		<Unit filename="MinimaxAB.h" />
 		<Unit filename="connect4game.cpp" />
 		<Unit filename="connect4game.h" />
 		<Unit filename="main.cpp" />
-		<Unit filename="minimaxab.cpp" />
 		<Unit filename="minimaxalphabeta.cpp" />
 		<Unit filename="minimaxalphabeta.h" />
 		<Extensions>
