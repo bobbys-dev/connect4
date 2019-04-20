@@ -209,5 +209,12 @@ void Connect4Game::printBoard () {
           }
     }
     cout << '\n';
-  }
+    }
 }
+
+  /**
+  * Return the value at given row and col
+  */
+  int Connect4Game::getSlotValue(int row, int col) {
+      return this->board.at(row).at(col);
+  }

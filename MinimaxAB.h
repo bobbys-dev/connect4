@@ -23,7 +23,7 @@ class MiniMaxAB{
          vector<MiniMaxAB> child;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
-        void humanVsComputerMinimaxAB(Connect4Game,int,int);
+        void humanVsComputerMinimaxAB(int,int); //correction: removed Connect4 parameter
 
 
         /** Function for MinimaxAB algorithm*/

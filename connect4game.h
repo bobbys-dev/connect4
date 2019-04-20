@@ -56,6 +56,11 @@ class Connect4Game {
         void clearBoard();
         void printBoard ();
 
+        /**
+        * Return the value at given row and col
+        */
+        int getSlotValue(int, int );
+
 	private:
         const static int ROWS = 6;
         const static int COLS = 7;

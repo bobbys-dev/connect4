@@ -80,7 +80,7 @@ void MiniMaxAB::MoveGen(Connect4Game board,int piece)
     {
         for(i=0;i<6;i++)
         {
-            if(board[i][j]==0)
+            if(board.getSlotValue(i,j)==0)
             {
                 child1.board.dropPiece(piece,i);
                 child.push_back(child1);
@@ -90,8 +90,8 @@ void MiniMaxAB::MoveGen(Connect4Game board,int piece)
     }
 }
 
-
- Connect4Game::miniMaxSearch(Connect4Game board,int depth, int piece,int UT,int PT)
+//CorrectionSit returns a connect4game, there are a typo in function definition here
+ Connect4Game MiniMaxAB::miniMaxSearch(Connect4Game board,int depth, int piece,int UT,int PT)
 {
     int value,i;
     MiniMaxAB resultSucc;
@@ -112,18 +112,18 @@ void MiniMaxAB::MoveGen(Connect4Game board,int piece)
         }
     }
 
-
-    return;
+    Connect4Game dummyGameState;
+    return dummyGameState;
 }
-void MiniMaxAB::humanVsComputerMinimaxAB(Connect4Game board,int depth,int peice)
+void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 {
+    Connect4Game tempBoard;
     int i=1;
     int columnNumber;
     while(i<=42)
     {
-        MiniMaxAB temp;
-        temp = miniMaxSearch(board,depth,peice,100,-120);
-        this->board.dropPiece(peice,temp.col);
+        tempBoard = miniMaxSearch(board,depth,peice,100,-120);
+        this->board.dropPiece(peice,tempBoard.col);
         cout<<"\nThe board position after computer's turn"<<endl;
         this->board.printBoard();
         checkWin();
