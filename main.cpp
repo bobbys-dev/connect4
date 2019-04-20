@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
     AB::MiniMaxAB board;
-    int choice,player;
+    int choice;
     cout<<"\nCONNECT FOUR GAME"<<endl;
     cout<<"\nEnter the mode from the following:\n1.Human vs Computer(MinimaxAB)\n2.Human vs Computer(AlphaBeta)\n";
     cin>>choice;

@@ -4,19 +4,30 @@
 #include <cstdlib>
 #include <cstdio>
 #include <iostream>
+#include <list>
 #include "connect4game.h"
 
 namespace AB {
-class MiniMaxAB {
-    public:
 
+struct structure
+{
+    int value;
+    int path;
+};
+
+
+class MiniMaxAB{
+    public:
+        int col;
+        Connect4Game board;
+         vector<MiniMaxAB> child;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
-        void humanVsComputerMinimaxAB(MiniMaxAB,int,int);
+        void humanVsComputerMinimaxAB(Connect4Game,int,int);
 
 
         /** Function for MinimaxAB algorithm*/
-        int miniMaxSearch(MiniMaxAB,int,int,int,int);
+        Connect4Game miniMaxSearch(Connect4Game,int,int,int,int);
 
         /**
         * Check if max depth is reached
@@ -28,17 +39,13 @@ class MiniMaxAB {
         bool deepEnough(int);
 
         /**Function to check if a player has won*/
-        void checkWin();
+        int checkWin();
 
         /**Function which evaluates the board position and returns the number*/
-        int Eval();
-
+        structure Eval(Connect4Game,int);
         void printGameBoard();
         void clearGameBoard();
-
-    private:
-        Connect4Game board;
-
+        void MoveGen(Connect4Game,int);
 
 };
 } //end namespace AB
