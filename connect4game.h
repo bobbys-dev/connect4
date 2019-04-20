@@ -63,5 +63,14 @@ class Connect4Game {
         vector<vector<int>> reds_list;
         vector<vector<int>> black_list;
 
+		/**
+		* Evaluation A function for present state of board
+		*/
+		int evalA();
+
+		/**
+		* Evaluation B function for present state of board
+		*/
+		int evalB();
 };
 #endif				//CONNECT4GAME_H guard

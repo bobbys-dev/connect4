@@ -14,7 +14,7 @@ class AlphaBeta {
     */
     struct some_struct {
         int value;
-        std::vector<int> mpath;
+        vector<int> mpath;
         some_struct() {
             value = 0;
             mpath = {0};
