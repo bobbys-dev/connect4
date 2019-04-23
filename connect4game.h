@@ -50,11 +50,35 @@ class Connect4Game {
 		*/
         void makeRandomMove (int);
 
+        /**
+       * Increment depth of board.
+       * Postcondition: current_depth is incremented by 1.
+       */
+       void incrementDepthPlayed();
+
+       /**
+       * Get current depth of board. This number is used to
+       * decide if  game state has been played to a far enough depth
+       * E.g. if we've played enough turns
+       * Return: current number of turns played
+       */
+       int getDepthPlayed();
+
 		/**
 		* clear board of all pieces
 		*/
         void clearBoard();
         void printBoard ();
+
+        /**
+ 		* Evaluation A function for present state of board
+ 		*/
+ 		int evalA();
+
+ 		/**
+ 		* Evaluation B function for present state of board
+ 		*/
+ 		int evalB();
 
 	private:
         const static int ROWS = 6;
@@ -62,15 +86,7 @@ class Connect4Game {
         vector<vector<int>> board;
         vector<vector<int>> reds_list;
         vector<vector<int>> black_list;
+        int current_depth; // used to count current depth of board state
 
-		/**
-		* Evaluation A function for present state of board
-		*/
-		int evalA();
-
-		/**
-		* Evaluation B function for present state of board
-		*/
-		int evalB();
 };
 #endif				//CONNECT4GAME_H guard

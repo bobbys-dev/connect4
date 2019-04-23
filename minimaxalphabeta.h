@@ -33,7 +33,7 @@ public:
     some_struct alphaBetaSearch(Connect4Game);
 
 private:
-   Connect4Game board; //actual state of board
+   Connect4Game gameState; //actual state of board
 
    /**
    * Check if search depth has been reached based on board state and depth.
@@ -52,7 +52,7 @@ private:
    * contained in board game to determine utility value
    * Output: integer representing utility value
    **/
-   int maxValue(Connect4Game);
+   int maxValue(Connect4Game, int, int);
 
    /**
    * minValue returns a utility value given game state and alpha beta
@@ -61,7 +61,7 @@ private:
    * Input: game board state, integers alpha and beta
    * Output: integer representing utility value
    **/
-   int minValue(Connect4Game);
+   int minValue(Connect4Game, int, int);
 
 
 

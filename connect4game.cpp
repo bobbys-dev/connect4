@@ -9,6 +9,7 @@ Connect4Game::Connect4Game() {
   // initialize any necessary members
   vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
   this->board = bd;
+  this->depths_played = 0;
 }
 
 /**
@@ -171,12 +172,30 @@ void Connect4Game::makeRandomMove(int player) {
 
 }
 
+
+/**
+* Increment depth of board.
+*/
+
+void Connect4Game::incrementDepthPlayed() {
+   this->current_depth++;
+}
+
+/**
+* Get current depth of board. This number is used to
+* decide if game state has been played to a far enough depth
+*/
+int Connect4Game::getDepthPlayed() {
+   return this->current_depth;
+}
+
 /**
 * Clear pieces from board
 */
 void Connect4Game::clearBoard() {
     vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
     this->board = bd;
+    this->depths_played = 0;
 }
 
 /**
@@ -210,4 +229,18 @@ void Connect4Game::printBoard () {
     }
     cout << '\n';
   }
+}
+
+/**
+* Evaluation A function for present state of board
+*/
+int Connect4Game::evalA() {
+   //To be implmented by NP
+}
+
+/**
+* Evaluation B function for present state of board
+*/
+int Connect4Game::evalB() {
+   return this->getConnectedReds();
 }
