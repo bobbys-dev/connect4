@@ -22,13 +22,21 @@ class Connect4Game {
         * Returns count of adjacent reds
         */
         int getConnectedReds ();
-        bool hasSurroundingReds(int, int, int);
 
         /**
         * Returns count of adjacent reds
         */
         int getConnectedBlacks ();
 
+        /**
+        * checks if board at (row,col) has any pieces that match
+        * supplied playerType parameter
+        * Input: playerType, row, and col
+        * plyaterType must = 1 for red, or = -1 for black
+        * Returns: True if there is any match, else false
+        **/
+        bool hasSurroundingPieces(int, int, int);
+        
         /**
         * Returns count of all reds and black in board
         */
@@ -78,7 +86,7 @@ class Connect4Game {
  		/**
  		* Evaluation B function for present state of board
  		*/
- 		int evalB(int);
+ 		int evalB(int, int);
 
 	private:
         const static int ROWS = 6;

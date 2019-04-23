@@ -20,7 +20,7 @@ int Connect4Game::getConnectedReds(){
   for (int r = 0; r < board.size (); r++) {
         for (int c = 0; c < board[0].size (); c++){
             //hardcoded red = 1
-            if (board.at(r).at(c) == 1 && hasSurroundingReds(1,r,c)){
+            if (board.at(r).at(c) == 1 && hasSurroundingPieces(1,r,c)){
                 count += 1;
 	        }
         }
@@ -29,9 +29,25 @@ int Connect4Game::getConnectedReds(){
 }
 
 /**
+* Returns count of adjacent blacks
+*/
+int Connect4Game::getConnectedBlacks() {
+   int count = 0;
+   for (int r = 0; r < board.size (); r++) {
+         for (int c = 0; c < board[0].size (); c++){
+             //hardcoded black = -1
+             if (board.at(r).at(c) == -1 && hasSurroundingPieces(-1,r,c)){
+                 count += 1;
+ 	        }
+         }
+     }
+   return count;
+}
+
+/**
 * Returns true if adjacent to any red
 */
-bool Connect4Game::hasSurroundingReds(int playerType, int row, int col){
+bool Connect4Game::hasSurroundingPieces(int playerType, int row, int col){
     //Check straight up down
     if(col >=0 && col < this->COLS) {
       if(row >= 0 && row < this->ROWS - 1) {
@@ -101,24 +117,6 @@ bool Connect4Game::hasSurroundingReds(int playerType, int row, int col){
       }
     }
   return false;
-}
-
-/**
-* Returns count of adjacent reds
-*/
-int Connect4Game::getConnectedBlacks() {
-  int
-    count = 0;
-  for (int r = 0; r > board.size (); r++)
-    {
-      for (int c = 0; c < board[0].size (); c++)
-	{
-	  if (board.at (r).at (c) != 0)
-	    {
-	    }
-	}
-    }
-  return count;
 }
 
 /**
@@ -241,9 +239,21 @@ int Connect4Game::evalA() {
 /**
 * Evaluation B function for present state of board
 */
-int Connect4Game::evalB(int col) {
+int Connect4Game::evalB(int playerType, int col) {
    //column 3 is the best col to start with
    int middleCol = (this->COLS - 1) / 2;
+
+   //get first nonempty row at column
+   int row = 0;
+   while (this->board.at(row).at(col) != 0 && row < this->ROWS) {
+      row++;
+   }
+
+   //check if inserting piece at row will make a connection
+   int pieceWillBeConnected = 0;
+   pieceWillBeConnected = (int)hasSurroundingPieces(playerType, row, col);
+
+   // add utility of intermediate values
    int util = this->getConnectedReds() + (middleCol - abs(middleCol - col));
    return util;
 }
