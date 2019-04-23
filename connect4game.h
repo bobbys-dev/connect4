@@ -54,7 +54,7 @@ class Connect4Game {
        * Increment depth of board.
        * Postcondition: current_depth is incremented by 1.
        */
-       void incrementDepthPlayed();
+       void settDepthPlayed(int);
 
        /**
        * Get current depth of board. This number is used to

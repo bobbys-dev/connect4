@@ -177,8 +177,8 @@ void Connect4Game::makeRandomMove(int player) {
 * Increment depth of board.
 */
 
-void Connect4Game::incrementDepthPlayed() {
-   this->current_depth++;
+void Connect4Game::settDepthPlayed(int new_depth) {
+   this->current_depth = new_depth;
 }
 
 /**
