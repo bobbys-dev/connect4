@@ -1,5 +1,5 @@
 #include "connect4game.h"
-
+#include <cmath>
 using namespace std;
 /**
 * Constructor creates a board game, which is a n x m grid
@@ -9,7 +9,7 @@ Connect4Game::Connect4Game() {
   // initialize any necessary members
   vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
   this->board = bd;
-  this->depths_played = 0;
+  this->current_depth = 0;
 }
 
 /**
@@ -177,7 +177,7 @@ void Connect4Game::makeRandomMove(int player) {
 * Increment depth of board.
 */
 
-void Connect4Game::settDepthPlayed(int new_depth) {
+void Connect4Game::setDepthPlayed(int new_depth) {
    this->current_depth = new_depth;
 }
 
@@ -195,7 +195,7 @@ int Connect4Game::getDepthPlayed() {
 void Connect4Game::clearBoard() {
     vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
     this->board = bd;
-    this->depths_played = 0;
+    this->current_depth = 0;
 }
 
 /**
@@ -241,6 +241,9 @@ int Connect4Game::evalA() {
 /**
 * Evaluation B function for present state of board
 */
-int Connect4Game::evalB() {
-   return this->getConnectedReds();
+int Connect4Game::evalB(int col) {
+   //column 3 is the best col to start with
+   int middleCol = (this->COLS - 1) / 2;
+   int util = this->getConnectedReds() + (middleCol - abs(middleCol - col));
+   return util;
 }

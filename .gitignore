@@ -25,6 +25,7 @@ obj/
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.gch
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

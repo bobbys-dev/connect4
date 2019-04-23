@@ -54,7 +54,7 @@ class Connect4Game {
        * Increment depth of board.
        * Postcondition: current_depth is incremented by 1.
        */
-       void settDepthPlayed(int);
+       void setDepthPlayed(int);
 
        /**
        * Get current depth of board. This number is used to
@@ -78,7 +78,7 @@ class Connect4Game {
  		/**
  		* Evaluation B function for present state of board
  		*/
- 		int evalB();
+ 		int evalB(int);
 
 	private:
         const static int ROWS = 6;
