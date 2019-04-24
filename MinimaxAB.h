@@ -9,25 +9,21 @@
 
 namespace AB {
 
-struct structure
-{
-    int value;
-    int path;
-};
 
 
 class MiniMaxAB{
     public:
-        int col;
+        int col=0;
+        int value,dep;
         Connect4Game board;
          vector<MiniMaxAB> child;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
-        void humanVsComputerMinimaxAB(Connect4Game,int,int);
+        void humanVsComputerMinimaxAB(int,int);
 
 
         /** Function for MinimaxAB algorithm*/
-        Connect4Game miniMaxSearch(Connect4Game,int,int,int,int);
+        MiniMaxAB miniMaxSearch(Connect4Game&,int,int,int,int);
 
         /**
         * Check if max depth is reached
@@ -38,15 +34,20 @@ class MiniMaxAB{
         */
         bool deepEnough(int);
 
-        /**Function to check if a player has won*/
-        int checkWin();
+
 
         /**Function which evaluates the board position and returns the number*/
-        structure Eval(Connect4Game,int);
+        void Eval(MiniMaxAB &,int);
+        int getScore(MiniMaxAB &,int, int);
         void printGameBoard();
         void clearGameBoard();
-        void MoveGen(Connect4Game,int);
+        void MoveGen(MiniMaxAB &,int);
+        int getSlotValueBoard(int,int);
+        void setBoard1(int [6][7] );
+        bool checkWinBoard(Connect4Game);
 
 };
+
+
 } //end namespace AB
 #endif // end MINIMAXAB_H guard

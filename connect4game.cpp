@@ -211,3 +211,98 @@ void Connect4Game::printBoard () {
     cout << '\n';
   }
 }
+/**
+  * Return the value at given row and col
+  */
+  int Connect4Game::getSlotValue(int row, int col) {
+      return this->board.at(row).at(col);
+  }
+
+  void Connect4Game::setBoard(int a[6][7] )
+  {
+      cout<<"\n Inside setBoard"<<endl;
+      int i,j,val;
+      for(i=0;i<6;i++)
+        for(j=0;j<7;j++)
+        {
+            val=a[i][j];
+            board.at(i).at(j)=val;
+        }
+  }
+
+  bool Connect4Game::checkWin(Connect4Game board)
+  {
+      cout<<"Inside connect4 checkwin"<<endl;
+      int WIN=4;
+      bool win;
+    {
+    for (int c = 0; c < 7; c++)
+    for (int r = 0; r < 6; r++)
+   if (getSlotValue(r,c) == 1)
+   {
+      // Check row
+      int count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) &&
+            (getSlotValue(r+d,c) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check column
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((c+d < COLS) &&
+            (getSlotValue(r,c+d) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check first diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) && (c+d < COLS) &&
+            (getSlotValue(r+d,c+d) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check second diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r-d >= 0) && (c+d < COLS) &&
+            (getSlotValue(r-d,c+d) == 1)) count++;
+      if (count == WIN) return true;
+   }
+   return false;
+  }
+  {
+    for (int c = 0; c < 7; c++)
+    for (int r = 0; r < 6; r++)
+   if (getSlotValue(r,c) == -1)
+   {
+      // Check row
+      int count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) &&
+            (getSlotValue(r+d,c) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check column
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((c+d < COLS) &&
+            (getSlotValue(r,c+d) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check first diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) && (c+d < COLS) &&
+            (getSlotValue(r+d,c+d) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check second diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r-d >= 0) && (c+d < COLS) &&
+            (getSlotValue(r-d,c+d) == -1)) count++;
+      if (count == WIN) return true;
+   }
+   return false;
+  }
+  }

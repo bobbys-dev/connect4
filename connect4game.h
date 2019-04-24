@@ -55,6 +55,9 @@ class Connect4Game {
 		*/
         void clearBoard();
         void printBoard ();
+        int getSlotValue(int, int);
+        void setBoard(int[6][7] );
+        bool checkWin(Connect4Game);
 
 	private:
         const static int ROWS = 6;
