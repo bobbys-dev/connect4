@@ -5,7 +5,8 @@ using namespace std;
 * Constructor creates a board game, which is a n x m grid
 * starting with empty values
 */
-Connect4Game::Connect4Game() {
+Connect4Game::Connect4Game()
+{
   // initialize any necessary members
   vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
   this->board = bd;
@@ -14,7 +15,8 @@ Connect4Game::Connect4Game() {
 /**
 * Returns count of adjacent reds
 */
-int Connect4Game::getConnectedReds(){
+int Connect4Game::getConnectedReds()
+{
   int count = 0;
   for (int r = 0; r < board.size (); r++) {
         for (int c = 0; c < board[0].size (); c++){
@@ -30,7 +32,8 @@ int Connect4Game::getConnectedReds(){
 /**
 * Returns true if adjacent to any red
 */
-bool Connect4Game::hasSurroundingReds(int playerType, int row, int col){
+bool Connect4Game::hasSurroundingReds(int playerType, int row, int col)
+{
     //Check straight up down
     if(col >=0 && col < this->COLS) {
       if(row >= 0 && row < this->ROWS - 1) {
@@ -105,9 +108,9 @@ bool Connect4Game::hasSurroundingReds(int playerType, int row, int col){
 /**
 * Returns count of adjacent reds
 */
-int Connect4Game::getConnectedBlacks() {
-  int
-    count = 0;
+int Connect4Game::getConnectedBlacks()
+{
+  int count = 0;
   for (int r = 0; r > board.size (); r++)
     {
       for (int c = 0; c < board[0].size (); c++)
@@ -123,7 +126,8 @@ int Connect4Game::getConnectedBlacks() {
 /**
 * Returns count of all reds and black in board
 */
-int Connect4Game::getTotalPieces() {
+int Connect4Game::getTotalPieces()
+{
     int count = 0;
     for (int r = 0; r > board.size (); r++) {
         for (int c = 0; c < board[0].size (); c++){
@@ -138,7 +142,8 @@ int Connect4Game::getTotalPieces() {
 /**
 * Mutator function that drops a piece onto the board of a specified column
 */
-int Connect4Game::dropPiece (int piece, int col) {
+int Connect4Game::dropPiece (int piece, int col)
+{
     int row = 0;
     if (piece == -1 || piece == 1 || col >= 0 || col < this->COLS) {
         // 1) find lowest empty slot in the column
@@ -156,9 +161,8 @@ int Connect4Game::dropPiece (int piece, int col) {
 /**
 * Drop a player piece in random column
 */
-void Connect4Game::makeRandomMove(int player) {
-
-
+void Connect4Game::makeRandomMove(int player)
+{
     if (player == 1 || player == -1) {
         int col = rand()% this->COLS;
         if (player == 1) {
@@ -174,7 +178,8 @@ void Connect4Game::makeRandomMove(int player) {
 /**
 * Clear pieces from board
 */
-void Connect4Game::clearBoard() {
+void Connect4Game::clearBoard()
+{
     vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
     this->board = bd;
 }
@@ -182,7 +187,8 @@ void Connect4Game::clearBoard() {
 /**
 * Prints board game
 */
-void Connect4Game::printBoard () {
+void Connect4Game::printBoard ()
+{
     cout << "r\\c ";
     for (int c = 0; c < board[0].size (); c++) {
         cout << c << "  ";
@@ -214,13 +220,13 @@ void Connect4Game::printBoard () {
 /**
   * Return the value at given row and col
   */
-  int Connect4Game::getSlotValue(int row, int col) {
+  int Connect4Game::getSlotValue(int row, int col)
+  {
       return this->board.at(row).at(col);
   }
 
-  void Connect4Game::setBoard(int a[6][7] )
+  void Connect4Game::setBoard(int a[6][7])
   {
-      cout<<"\n Inside setBoard"<<endl;
       int i,j,val;
       for(i=0;i<6;i++)
         for(j=0;j<7;j++)
@@ -232,14 +238,13 @@ void Connect4Game::printBoard () {
 
   bool Connect4Game::checkWin(Connect4Game board)
   {
-      cout<<"Inside connect4 checkwin"<<endl;
       int WIN=4;
       bool win;
     {
     for (int c = 0; c < 7; c++)
     for (int r = 0; r < 6; r++)
-   if (getSlotValue(r,c) == 1)
-   {
+    if (getSlotValue(r,c) == 1)
+    {
       // Check row
       int count = 0;
       for (int d = 0; d < WIN; d++)
@@ -306,3 +311,19 @@ void Connect4Game::printBoard () {
    return false;
   }
   }
+
+  bool Connect4Game::checkValidMove(Connect4Game board,int column)
+  {
+      int i;
+        if(column<0 && column>6)
+            return false;
+
+        for(i=0;i<6;i++)
+        {
+            if(getSlotValue(i,column)==1 || getSlotValue(i,column)==0)
+                return false;
+        }
+    return true;
+  }
+
+

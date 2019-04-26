@@ -13,12 +13,112 @@ vector<MiniMaxAB> bestPath;
 bool MiniMaxAB::checkWinBoard(Connect4Game board)
 {
     bool a;
-    cout<<"Inside CheckWin"<<endl;
     a=this->board.checkWin(board);
-    cout<<"Exiting CheckWin"<<endl;
     return a;
 }
 
+bool MiniMaxAB::checkValidMoveBoard(Connect4Game board,int column)
+{
+    bool b;
+    b=this->board.checkValidMove(board,column);
+    return b;
+}
+
+int MiniMaxAB:: getScore(MiniMaxAB &session,int row, int col)
+{
+    int score = 0,ROWS=6,COLS=7;
+    bool unblocked = true;
+    int count1 = 0;
+    //int r, c;
+    if (row < ROWS-3)
+    {
+    //check up
+    unblocked = true;
+    count1 = 0;
+        for (int r=row; r<row+4; r++)
+        {
+            if (session.board.getSlotValue(r,col) == -1)
+            {
+            unblocked = false;
+            }
+            if (session.board.getSlotValue(r,col) == 1)
+            {
+            count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (col < COLS-3)
+            {
+            //check up and to the right
+            unblocked = true;
+            count1 = 0;
+            for (int r=row, c=col; r<row+4; r++, c++)
+            {
+                if (session.board.getSlotValue(r,c) == -1)
+                {
+                unblocked = false;
+                }
+                if (session.board.getSlotValue(r,c) == 1)
+                {
+                count1 ++;
+                }
+            }
+                if (unblocked == true)
+                {
+                score = score + (count1*count1*count1*count1);
+                }
+            }
+    }
+
+    if (col < COLS-3)
+    {
+        //check right
+        unblocked = true;
+        count1 = 0;
+        for (int c=col; c<col+4; c++)
+        {
+            if (session.board.getSlotValue(row,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (session.board.getSlotValue(row,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (row > 2)
+        {
+        //check down and to the right
+        unblocked = true;
+        count1 = 0;
+        for (int r=row, c=col; c<col+4; r--, c++)
+        {
+            if (session.board.getSlotValue(r,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (session.board.getSlotValue(r,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+        }
+    }
+ return score;
+ }
 
 
 void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
@@ -39,7 +139,7 @@ void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
                 else if (session.board.getSlotValue(i,j) == -1)
                     sum -= evaluationTable[i][j];
        // return utility + sum;
-       cout<<"\nInside eval utility+sum= "<<utility+sum<<endl;
+      // cout<<"\nInside eval utility+sum= "<<utility+sum<<endl;
     session.value=utility+sum;
 
 //    int score = 0;
@@ -66,7 +166,6 @@ void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
 
 void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
 {
-    cout<<"Inside Movegen"<<endl;
     int i,j=0;
     MiniMaxAB session1;
     session1.board=session.board;
@@ -183,24 +282,19 @@ void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
 
 MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT)
 {
-    cout<<"\nInside minimax search"<<endl;
-    //bestPath.clear();
     unsigned int i;
     MiniMaxAB session;
     session.board=board;
     if(deepEnough(depth))
     {
-        cout<<"\n Deep Enough"<<endl;
         Eval(session,piece);
-        cout<<"\nAfter Eval"<<endl;
-        cout<<"\n\nsession.value"<<session.value;
         if(piece==-1)
             session.value*=-1;
         return session;
     }
 
     session.MoveGen(session,piece);
-    cout<<"\nThe child size is:"<<session.child.size()<<endl;
+    //cout<<"\nThe child size is:"<<session.child.size()<<endl;
     if(session.child.size()==0)
     {
         Eval(session,piece);
@@ -224,15 +318,13 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
                 return session.child[i];
             }
     }
-    //session.board=board;
 	session.value=PT;
 	return session;
-	cout<<"Exiting Minimax Search"<<endl;
+
 }
 
 void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 {
-    cout<<"Inside Human Vs Computer"<<endl;
     MiniMaxAB temp;
     int m;
     int columnNumber;
@@ -257,18 +349,19 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 			}
 		}
 		setBoard1(pass);
-        cout<<"\nThe board position after computer's turn"<<endl;
+        cout<<"\nThe board position after computer's turn is"<<endl;
         this->board.printBoard();
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"Game Over"<<endl;
+            cout<<"******Game Over*******"<<endl;
             break;
         }
         peice=-1;
         cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
         cin>>columnNumber;
         this->board.dropPiece(peice,columnNumber);
+         cout<<"\nThe board position after your(Human) turn is"<<endl;
         this->board.printBoard();
         checkWinBoard(board);
     }

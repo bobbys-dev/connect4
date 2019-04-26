@@ -45,9 +45,9 @@ class MiniMaxAB{
         int getSlotValueBoard(int,int);
         void setBoard1(int [6][7] );
         bool checkWinBoard(Connect4Game);
+        bool checkValidMoveBoard(Connect4Game,int );
 
 };
-
 
 } //end namespace AB
 #endif // end MINIMAXAB_H guard

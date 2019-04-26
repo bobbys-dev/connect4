@@ -58,6 +58,7 @@ class Connect4Game {
         int getSlotValue(int, int);
         void setBoard(int[6][7] );
         bool checkWin(Connect4Game);
+        bool checkValidMove(Connect4Game,int);
 
 	private:
         const static int ROWS = 6;
