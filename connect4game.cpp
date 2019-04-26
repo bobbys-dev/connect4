@@ -1,6 +1,9 @@
 #include "connect4game.h"
 #include <cmath>
 using namespace std;
+
+namespace AI {
+
 /**
 * Constructor creates a board game, which is a n x m grid
 * starting with empty values
@@ -138,8 +141,10 @@ int Connect4Game::getTotalPieces() {
 * Mutator function that drops a piece onto the board of a specified column
 */
 int Connect4Game::dropPiece (int piece, int col) {
+//  cout << "In dropPiece()..." << endl;
+
     int row = 0;
-    if (piece == -1 || piece == 1 || col >= 0 || col < this->COLS) {
+    if ((piece == -1 || piece == 1) && col >= 0 && col < this->COLS) {
         // 1) find lowest empty slot in the column
         while (row < this->ROWS && board.at(row).at(col) != 0) {
             row += 1;
@@ -151,6 +156,24 @@ int Connect4Game::dropPiece (int piece, int col) {
         }
     }
 }
+
+void Connect4Game::removeTopPiece(int col) {
+//  cout << "In removeTopPiece()..." << endl;
+
+    int row = 0;
+    if (col >= 0 && col < this->COLS) {
+        // 1) find lowest empty slot in the column
+        while (row < this->ROWS && board.at(row).at(col) != 0) {
+            row += 1;
+        }
+        // 2) empty the slot
+        row -= 1;
+        if (row >= 0 && row < this->ROWS && board.at(row).at(col) != 0) {
+            board.at(row).at(col) = 0;
+        }
+    }
+}
+
 
 /**
 * Drop a player piece in random column
@@ -170,7 +193,6 @@ void Connect4Game::makeRandomMove(int player) {
 
 }
 
-
 /**
 * Increment depth of board.
 */
@@ -186,6 +208,107 @@ void Connect4Game::setDepthPlayed(int new_depth) {
 int Connect4Game::getDepthPlayed() {
    return this->current_depth;
 }
+
+
+/**
+* Get all open columns by checking if at topmost row
+* is empty
+*/
+vector<int> Connect4Game::getOpenColumns(){
+   vector<int> playableCols;
+   int row = this->ROWS-1; //topmost row
+   for (int col = 0; col < this->COLS; col++) {
+      if (board.at(row).at(col) == 0) {
+         playableCols.push_back(col);
+      }
+   }
+   return playableCols;
+}
+
+    /**
+    * Return the value at given row and col
+    */
+    int Connect4Game::getSlotValue(int row, int col) {
+      return this->board.at(row).at(col);
+    }
+
+  bool Connect4Game::checkWin(Connect4Game board)
+  {
+ //     cout<<"Inside connect4 checkwin"<<endl;
+      int WIN=4;
+      bool win;
+    {
+    for (int c = 0; c < 7; c++)
+    for (int r = 0; r < 6; r++)
+   if (getSlotValue(r,c) == 1)
+   {
+      // Check row
+      int count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) &&
+            (getSlotValue(r+d,c) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check column
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((c+d < COLS) &&
+            (getSlotValue(r,c+d) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check first diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) && (c+d < COLS) &&
+            (getSlotValue(r+d,c+d) == 1)) count++;
+      if (count == WIN) return true;
+
+      // Check second diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r-d >= 0) && (c+d < COLS) &&
+            (getSlotValue(r-d,c+d) == 1)) count++;
+      if (count == WIN) return true;
+   }
+   return false;
+  }
+  {
+    for (int c = 0; c < 7; c++)
+    for (int r = 0; r < 6; r++)
+   if (getSlotValue(r,c) == -1)
+   {
+      // Check row
+      int count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) &&
+            (getSlotValue(r+d,c) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check column
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((c+d < COLS) &&
+            (getSlotValue(r,c+d) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check first diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r+d < ROWS) && (c+d < COLS) &&
+            (getSlotValue(r+d,c+d) == -1)) count++;
+      if (count == WIN) return true;
+
+      // Check second diagonal
+      count = 0;
+      for (int d = 0; d < WIN; d++)
+         if ((r-d >= 0) && (c+d < COLS) &&
+            (getSlotValue(r-d,c+d) == -1)) count++;
+      if (count == WIN) return true;
+   }
+   return false;
+  }
+  }
+
 
 /**
 * Clear pieces from board
@@ -238,8 +361,22 @@ int Connect4Game::evalA() {
 
 /**
 * Evaluation B function for present state of board
+* Returns 'goodness' of playing a column
 */
 int Connect4Game::evalB(int playerType, int col) {
+    playerType = 1;
+//    cout << "In evalB, computing util for col " << col << endl;
+
+
+    //test if connect4
+//    cout << " testing for connect 4" << col << endl;
+
+    this->dropPiece(playerType,col);
+    if(this->checkWin(*this)){
+        return 1000; //highest weight
+    }
+    this->removeTopPiece(col);
+
    //column 3 is the best col to start with
    int middleCol = (this->COLS - 1) / 2;
 
@@ -250,10 +387,62 @@ int Connect4Game::evalB(int playerType, int col) {
    }
 
    //check if inserting piece at row will make a connection
-   int pieceWillBeConnected = 0;
-   pieceWillBeConnected = (int)hasSurroundingPieces(playerType, row, col);
+    // score 1 for any surrounding pieces
+   int surroundingPieces = 0;
+
+    // upper right
+    if(row < this->ROWS - 1 && col < this->COLS - 1) {
+        if(this->getSlotValue(row+1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+    // upper left
+    if(row < this->ROWS - 1 && col > 0) {
+        if(this->getSlotValue(row+1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+    // right
+    if(row < this->ROWS && col < this->COLS - 1) {
+        if(this->getSlotValue(row,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+    // left
+    if(row < this->ROWS && col > 0) {
+        if(this->getSlotValue(row,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+    // lower right
+    if(row > 0 && col < this->COLS - 1) {
+        if(this->getSlotValue(row-1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+    // lower left
+    if(row > 0 && col > 0) {
+        if(this->getSlotValue(row-1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+
+//    cout << "  util... for possible piece="<< playerType<< " to drop in row, col " << row << ", "<< col << endl;
+//
+//    cout << "   util... this->getConnectedReds() is " << this->getConnectedReds() << endl;
+//    cout << "   util... this->getConnectedBlacks() is " << this->getConnectedBlacks() << endl;
+//    cout << "   util... (middleCol - abs(middleCol - col)) is " << (middleCol - abs(middleCol - col)) << endl;
+//    cout << "   util... surroundingPieces is " << surroundingPieces << endl;
 
    // add utility of intermediate values
-   int util = this->getConnectedReds() + (middleCol - abs(middleCol - col));
+   int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
+//   cout << "evalB is returning util of " << util << endl << endl;
    return util;
 }
+
+}// end namespace AI

@@ -9,7 +9,7 @@
 #include <iostream> //cout
 
 using namespace std;
-
+namespace AI {
 class Connect4Game {
     public:
         /**
@@ -36,7 +36,7 @@ class Connect4Game {
         * Returns: True if there is any match, else false
         **/
         bool hasSurroundingPieces(int, int, int);
-        
+
         /**
         * Returns count of all reds and black in board
         */
@@ -49,6 +49,13 @@ class Connect4Game {
         * Invariant: must be a valid piece and column
         */
         int dropPiece (int, int);
+
+        /**
+        * Mutator function that removes top piece from column
+        * Input: int column
+        * Post condition: piece from column is removed
+        */
+        void removeTopPiece (int);
 
 		/**
 		* Drop a player piece in random column
@@ -71,6 +78,22 @@ class Connect4Game {
        * Return: current number of turns played
        */
        int getDepthPlayed();
+
+       /**
+       * Return vector of columns of which a piece may be dropped
+       * in current state.
+       */
+       vector<int> getOpenColumns();
+
+       /**
+      * Return the value at given row and col
+      */
+      int getSlotValue(int /*row*/, int /*col*/);
+
+       /**
+       * Return true if there is winning player
+       */
+       bool checkWin(Connect4Game /*unused*/);
 
 		/**
 		* clear board of all pieces
@@ -97,4 +120,6 @@ class Connect4Game {
         int current_depth; // used to count current depth of board state
 
 };
+}// end namespace AI
 #endif				//CONNECT4GAME_H guard
+

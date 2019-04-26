@@ -2,7 +2,7 @@
 #include<bits/stdc++.h>
 
 using namespace std;
-namespace AB {
+namespace AI {
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }

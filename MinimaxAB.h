@@ -6,7 +6,7 @@
 #include <iostream>
 #include "connect4game.h"
 
-namespace AB {
+namespace AI {
 class MiniMaxAB {
     public:
 
@@ -41,5 +41,5 @@ class MiniMaxAB {
 
 
 };
-} //end namespace AB
+} //end namespace AI
 #endif // end MINIMAXAB_H guard
