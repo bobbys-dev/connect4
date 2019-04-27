@@ -408,7 +408,7 @@ int Connect4Game::evalA(Connect4Game board,int peice)
 * Evaluation B function for present state of board
 * Returns 'goodness' of playing a column
 */
-int Connect4Game::evalB(int playerType, int col) {
+int Connect4Game::evalBAlphaBeta(int playerType, int col) {
     playerType = 1;
     cout << "In evalB, computing util for col " << col << endl;
 
@@ -584,7 +584,7 @@ int Connect4Game:: getScore(Connect4Game &board,int row, int col)
  }
 
 
-int Connect4Game::evalC(Connect4Game board,int peice)
+int Connect4Game::evalCMinmax(Connect4Game board,int peice)
 {
         int score = 0;
         for (int r= 0; r < 6; r++)
@@ -606,6 +606,93 @@ int Connect4Game::evalC(Connect4Game board,int peice)
             }
 
  return score;
+
+}
+
+int Connect4Game::evalCAlphaBeta(int playerType, int col)
+{
+    Connect4Game tempBoard;
+    tempBoard.board=this->board;
+    tempBoard.dropPiece(playerType,col);
+            int score = 0;
+        for (int r= 0; r < 6; r++)
+            {
+                if (r <= 6-4)
+                {
+                    for (int c = 0; c < 7; c++)
+                    {
+                        score += getScore(tempBoard,r,c);
+                    }
+                }
+                else
+                {
+                    for (int c = 0; c <= 7-4; c++)
+                    {
+                        score += getScore(tempBoard,r,c);
+                    }
+                }
+            }
+
+ return score;
+}
+
+int Connect4Game::evalBMinmax(Connect4Game board,int peice)
+{
+    int ROWS=6;
+    int COLS=7;
+    int playerType=peice;
+      //column 3 is the best col to start with
+   int middleCol = (COLS - 1) / 2;
+
+   //get first nonempty row at column
+   int row = 0;
+   int col=board.curCol;
+   while (board.getSlotValue(row,col) != 0 && row < ROWS) {
+      row++;
+   }
+
+   //check if inserting piece at row will make a connection
+    // score 1 for any surrounding pieces
+   int surroundingPieces = 0;
+    // upper right
+    if(row < ROWS - 1 && col < COLS - 1) {
+        if(board.getSlotValue(row+1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // upper left
+    if(row < ROWS - 1 && col > 0) {
+        if(board.getSlotValue(row+1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // right
+    if(row < ROWS && col < COLS - 1) {
+        if(board.getSlotValue(row,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // left
+    if(row < ROWS && col > 0) {
+        if(board.getSlotValue(row,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // lower right
+    if(row > 0 && col < COLS - 1) {
+        if(board.getSlotValue(row-1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // lower left
+    if(row > 0 && col > 0) {
+        if(board.getSlotValue(row-1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+   // add utility of intermediate values
+   int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
+   return util;
 
 }
 

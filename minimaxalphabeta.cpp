@@ -54,7 +54,7 @@ namespace AI {
             int tempEval;
             //get max of playableCols
             for (int i = 0; i < playableCols.size(); i++) {
-                tempEval = gameState.evalB(playerType,playableCols.at(i));
+                tempEval = gameState.evalBAlphaBeta(playerType,playableCols.at(i));
                 if (maxEval < tempEval) {
                     maxEval = tempEval;
                     bestCol = playableCols.at(i);
@@ -119,7 +119,7 @@ namespace AI {
             int tempEval;
             //get max of playableCols
             for (int i = 0; i < playableCols.size(); i++) {
-                tempEval = gameState.evalB(playerType,playableCols.at(i));
+                tempEval = gameState.evalBAlphaBeta(playerType,playableCols.at(i));
                 if (minEval > tempEval) {
                     minEval = tempEval;
                     bestCol = playableCols.at(i);
