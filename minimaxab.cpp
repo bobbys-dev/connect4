@@ -10,7 +10,6 @@ using namespace std::chrono;
 namespace AI {
 
 static int gamePath=0;
-static int totalNodes=0;
 static int executionTime=0;
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
@@ -182,12 +181,12 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
                 PT = newValue;
                 if(depth == 0)
                 bestPathMinmaxAB.push_back(session.child[i]);
-                totalNodes++;
+                session.totalNodes++;
             }
         if(PT >= UT)
             {
                 session.child[i].value=PT;
-                totalNodes++;
+                session.totalNodes++;
                 return session.child[i];
             }
     }
