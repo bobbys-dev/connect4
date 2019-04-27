@@ -12,6 +12,7 @@ class AlphaBeta {
     /**
     * Struct for hold path and desired value
     */
+    public:
     struct some_struct {
         int value;
         vector<int> mpath;
@@ -23,6 +24,7 @@ class AlphaBeta {
     };
 
 public:
+   vector<int> bestPath; // keeps track of best path
 
     /**
     * alphaBetaSearch returns an action corresponding to best possible move
@@ -50,7 +52,7 @@ public:
    * Plays game based on computer as max player
    */
    void humanVsComputerAlphaBeta(int, int);
-private:
+
    Connect4Game gameState; //actual state of board
 
    /**
