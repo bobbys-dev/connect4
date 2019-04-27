@@ -6,8 +6,6 @@ using namespace std;
 
 namespace AI {
 
-   vector<int> bestPath; // keeps track of best path
-
    AlphaBeta::some_struct AlphaBeta::alphaBetaSearch(
       Connect4Game gameState, int playerType, int maxDepth) {
 

@@ -9,26 +9,26 @@ namespace AI {
 * starting with empty values
 */
 Connect4Game::Connect4Game() {
-  // initialize any necessary members
-  vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
-  this->board = bd;
-  this->current_depth = 0;
+   // initialize any necessary members
+   vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
+   this->board = bd;
+   this->current_depth = 0;
 }
 
 /**
 * Returns count of adjacent reds
 */
-int Connect4Game::getConnectedReds(){
-  int count = 0;
-  for (int r = 0; r < board.size (); r++) {
-        for (int c = 0; c < board[0].size (); c++){
-            //hardcoded red = 1
-            if (board.at(r).at(c) == 1 && hasSurroundingPieces(1,r,c)){
-                count += 1;
-	        }
-        }
-    }
-  return count;
+int Connect4Game::getConnectedReds() {
+   int count = 0;
+   for (int r = 0; r < board.size (); r++) {
+      for (int c = 0; c < board[0].size (); c++){
+         //hardcoded red = 1
+         if (board.at(r).at(c) == 1 && hasSurroundingPieces(1,r,c)){
+             count += 1;
+         }
+      }
+   }
+   return count;
 }
 
 /**
@@ -125,7 +125,8 @@ bool Connect4Game::hasSurroundingPieces(int playerType, int row, int col){
 /**
 * Returns count of all reds and black in board
 */
-int Connect4Game::getTotalPieces() {
+int Connect4Game::getTotalPieces()
+{
     int count = 0;
     for (int r = 0; r > board.size (); r++) {
         for (int c = 0; c < board[0].size (); c++){
@@ -140,9 +141,8 @@ int Connect4Game::getTotalPieces() {
 /**
 * Mutator function that drops a piece onto the board of a specified column
 */
-int Connect4Game::dropPiece (int piece, int col) {
-//  cout << "In dropPiece()..." << endl;
-
+int Connect4Game::dropPiece (int piece, int col)
+{
     int row = 0;
     if ((piece == -1 || piece == 1) && col >= 0 && col < this->COLS) {
         // 1) find lowest empty slot in the column
@@ -178,9 +178,8 @@ void Connect4Game::removeTopPiece(int col) {
 /**
 * Drop a player piece in random column
 */
-void Connect4Game::makeRandomMove(int player) {
-
-
+void Connect4Game::makeRandomMove(int player)
+{
     if (player == 1 || player == -1) {
         int col = rand()% this->COLS;
         if (player == 1) {
@@ -225,95 +224,120 @@ vector<int> Connect4Game::getOpenColumns(){
    return playableCols;
 }
 
-    /**
-    * Return the value at given row and col
-    */
-    int Connect4Game::getSlotValue(int row, int col) {
-      return this->board.at(row).at(col);
-    }
+/**
+* Return the value at given row and col
+*/
+int Connect4Game::getSlotValue(int row, int col) {
+   return this->board.at(row).at(col);
+}
 
-  bool Connect4Game::checkWin(Connect4Game board)
-  {
- //     cout<<"Inside connect4 checkwin"<<endl;
-      int WIN=4;
-      bool win;
-    {
-    for (int c = 0; c < 7; c++)
-    for (int r = 0; r < 6; r++)
-   if (getSlotValue(r,c) == 1)
+void Connect4Game::setBoard(int a[6][7])
+{
+   int i,j,val;
+   for(i=0;i<6;i++)
+   for(j=0;j<7;j++)
    {
-      // Check row
-      int count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r+d < ROWS) &&
-            (getSlotValue(r+d,c) == 1)) count++;
-      if (count == WIN) return true;
+       val=a[i][j];
+       board.at(i).at(j)=val;
+   }
+}
 
-      // Check column
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((c+d < COLS) &&
-            (getSlotValue(r,c+d) == 1)) count++;
-      if (count == WIN) return true;
+bool Connect4Game::checkWin(Connect4Game board)
+{
+    int WIN=4;
+    bool win;
+  {
+  for (int c = 0; c < 7; c++)
+  for (int r = 0; r < 6; r++)
+  if (getSlotValue(r,c) == 1)
+  {
+    // Check row
+    int count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r+d < ROWS) &&
+          (getSlotValue(r+d,c) == 1)) count++;
+    if (count == WIN) return true;
 
-      // Check first diagonal
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r+d < ROWS) && (c+d < COLS) &&
-            (getSlotValue(r+d,c+d) == 1)) count++;
-      if (count == WIN) return true;
+    // Check column
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((c+d < COLS) &&
+          (getSlotValue(r,c+d) == 1)) count++;
+    if (count == WIN) return true;
 
-      // Check second diagonal
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r-d >= 0) && (c+d < COLS) &&
-            (getSlotValue(r-d,c+d) == 1)) count++;
-      if (count == WIN) return true;
+    // Check first diagonal
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r+d < ROWS) && (c+d < COLS) &&
+          (getSlotValue(r+d,c+d) == 1)) count++;
+    if (count == WIN) return true;
+
+    // Check second diagonal
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r-d >= 0) && (c+d < COLS) &&
+          (getSlotValue(r-d,c+d) == 1)) count++;
+    if (count == WIN) return true;
    }
    return false;
-  }
-  {
-    for (int c = 0; c < 7; c++)
-    for (int r = 0; r < 6; r++)
+   }
+   {
+   for (int c = 0; c < 7; c++)
+   for (int r = 0; r < 6; r++)
    if (getSlotValue(r,c) == -1)
    {
-      // Check row
-      int count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r+d < ROWS) &&
-            (getSlotValue(r+d,c) == -1)) count++;
-      if (count == WIN) return true;
+    // Check row
+    int count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r+d < ROWS) &&
+          (getSlotValue(r+d,c) == -1)) count++;
+    if (count == WIN) return true;
 
-      // Check column
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((c+d < COLS) &&
-            (getSlotValue(r,c+d) == -1)) count++;
-      if (count == WIN) return true;
+    // Check column
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((c+d < COLS) &&
+          (getSlotValue(r,c+d) == -1)) count++;
+    if (count == WIN) return true;
 
-      // Check first diagonal
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r+d < ROWS) && (c+d < COLS) &&
-            (getSlotValue(r+d,c+d) == -1)) count++;
-      if (count == WIN) return true;
+    // Check first diagonal
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r+d < ROWS) && (c+d < COLS) &&
+          (getSlotValue(r+d,c+d) == -1)) count++;
+    if (count == WIN) return true;
 
-      // Check second diagonal
-      count = 0;
-      for (int d = 0; d < WIN; d++)
-         if ((r-d >= 0) && (c+d < COLS) &&
-            (getSlotValue(r-d,c+d) == -1)) count++;
-      if (count == WIN) return true;
+    // Check second diagonal
+    count = 0;
+    for (int d = 0; d < WIN; d++)
+       if ((r-d >= 0) && (c+d < COLS) &&
+          (getSlotValue(r-d,c+d) == -1)) count++;
+   if (count == WIN) return true;
    }
    return false;
-  }
-  }
+   }
+}
+
+bool Connect4Game::checkValidMove(Connect4Game board,int column)
+{
+    int i;
+      if(column<0 && column>6)
+          return false;
+
+      for(i=0;i<6;i++)
+      {
+          if(getSlotValue(i,column)==1 || getSlotValue(i,column)==0)
+              return false;
+      }
+  return true;
+}
 
 
 /**
 * Clear pieces from board
 */
-void Connect4Game::clearBoard() {
+void Connect4Game::clearBoard()
+{
     vector<vector<int>> bd(this->ROWS, vector<int>(this->COLS, 0));
     this->board = bd;
     this->current_depth = 0;
@@ -322,7 +346,8 @@ void Connect4Game::clearBoard() {
 /**
 * Prints board game
 */
-void Connect4Game::printBoard () {
+void Connect4Game::printBoard ()
+{
     cout << "r\\c ";
     for (int c = 0; c < board[0].size (); c++) {
         cout << c << "  ";

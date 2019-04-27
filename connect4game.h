@@ -100,6 +100,8 @@ class Connect4Game {
 		*/
         void clearBoard();
         void printBoard ();
+        void setBoard(int[6][7] );
+        bool checkValidMove(Connect4Game,int);
 
         /**
  		* Evaluation A function for present state of board
@@ -122,4 +124,3 @@ class Connect4Game {
 };
 }// end namespace AI
 #endif				//CONNECT4GAME_H guard
-
