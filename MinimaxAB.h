@@ -7,9 +7,7 @@
 #include <list>
 #include "connect4game.h"
 
-namespace AB {
-
-
+namespace AI {
 
 class MiniMaxAB{
     public:
@@ -48,6 +46,5 @@ class MiniMaxAB{
         bool checkValidMoveBoard(Connect4Game,int );
 
 };
-
-} //end namespace AB
+} //end namespace AI
 #endif // end MINIMAXAB_H guard

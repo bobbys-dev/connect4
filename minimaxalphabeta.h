@@ -4,16 +4,17 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include "connect4game.h"
 
-namespace alphaBeta{
+namespace AI{
 
-class MinMaxAlphaBeta {
+class AlphaBeta {
     /**
     * Struct for hold path and desired value
     */
     struct some_struct {
         int value;
-        std::vector<int> mpath;
+        vector<int> mpath;
         some_struct() {
             value = 0;
             mpath = {0};
@@ -24,43 +25,84 @@ class MinMaxAlphaBeta {
 public:
 
     /**
-    * Recursively searches plausible moves down to depth.
-    * Input: board position, current depth of search, and player to move
-   *    max player = 1, min player = -1
+    * alphaBetaSearch returns an action corresponding to best possible move
+    * This function computes minimax decision from current state,
+    * and also uses bookkeeping alpha and beta parameters
+    * Searches plausible moves down to cutoff depth. Values
+    * are backed up through tree as recursion unwinds.
+    * Must set depth to > 0;
+    * Input: game state, player type (red = 1, black = -1), max depth to search
     * Returns structure containing both (min or max) value and path to that value
     **/
-    some_struct miniMaxAlphaBeta(int,int,int,int,int);
-
-private:
+    some_struct alphaBetaSearch(Connect4Game, int /*player*/, int /*max depth*/);
 
    /**
-   * Check if search depth has been reached based on positino and depth.
+   * clears internal game board
+   **/
+   void clearGameBoard();
+
+   /**
+   * prints internal game board
+   **/
+   void printGameBoard();
+
+   /**
+   * Plays game based on computer as max player
+   */
+   void humanVsComputerAlphaBeta(int, int);
+private:
+   Connect4Game gameState; //actual state of board
+
+   /**
+   * Check if search depth has been reached based on board state and depth.
    * It will ignore its position parameter and simply return TRUE if its
    * depth parameter exceeds a constant cutoff value.​
    * Input: board position, current depth of search
-   * Output: TRUE if search should be stopped at current level, else FALSE.
+   * Output: true when depth has reached zero.
+   * true for all terminal states eg when game is over. false otherwise
    **/
-   bool deepEnough(int, int);
+   bool cutoffTest(Connect4Game);
 
-    /**
-   * Plausible-move generator, which returns queue list of nodes representing
-   *  moves that can be made by Player in Position.
-   * Input: board position,  and player to move
-   *    max player = 1, min player = -1
-   * Output: queue of nodes
+   /**
+   * maxValue returns a utility value given game state, alpha, and beta
+   * Input: game board state, player type, integers (lowerbound) and beta (upperbound)
+   * (player type: red = 1, black = -1)
+   * It uses one of the evaluation functions
+   * contained in board game to determine utility value
+   * Output: integer representing utility value
    **/
-    std::queue<int> moveGen(int, int );
+   int maxValue(Connect4Game, int /*player*/, int /*alpha*/, int /*beta*/);
 
-    /**
-    * Static evaluation function returns "goodness" based on input.
-    * position: position of player
-    *    max player = 1, min player = -1
-    * returns: number representing goodness of position from standpoint of player
-    */
-    int staticEval1(int, int);
+   /**
+   * minValue returns a utility value given game state, alpha, and beta
+   * It uses one of the evaluation functions
+   * contained in board game to determine utility value
+   * Input: game board state, player type, integers alpha (lowerbound) and beta (upperbound)
+   * (player type: red = 1, black = -1)
+   * It uses one of the evaluation functions
+   * Output: integer representing utility value
+   **/
+   int minValue(Connect4Game, int /*player*/, int /*alpha*/, int /*beta*/);
 
+   /**
+   * This function transition model that defines result of dropping a player's
+   * piece into column. It returns the resultant state as if dropPiece()
+   * were invoked.
+   * Precondition: must be player's turn and move must be valid
+   * Input: gameState, playerType, column
+   * (playerType: Red = 1, Black = -1)
+   * Postcondition: gameState of input it changed
+   * Output: resultant state of game once player piece is dropped
+   */
+   Connect4Game result(Connect4Game, int /*player*/, int /*column*/);
 
+   /**
+   * Actions(s) returns vector set of possible columns to dropPiece
+   * Input: gameState of Board
+   * Output: vector of columns on which any piece may be dropped
+   */
+   vector<int> actions(Connect4Game);
 
 };
-} //end alphaBeta namespace
+} //end AI namespace
 #endif //MINMAXALPHABETA_H guard
