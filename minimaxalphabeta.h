@@ -23,9 +23,9 @@ class AlphaBeta {
 
     };
 
-public:
-   vector<int> bestPath; // keeps track of best path
 
+   vector<int> bestPath; // keeps track of best path
+   vector<int> nodesGenerated;
     /**
     * alphaBetaSearch returns an action corresponding to best possible move
     * This function computes minimax decision from current state,
