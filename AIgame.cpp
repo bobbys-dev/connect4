@@ -3,7 +3,7 @@
 using namespace std;
 using namespace AI;
 
-
+static int gamePath;
 
 void AIgame::MinmaxVsAlphabeta(int depth,int peice)
 {
@@ -34,10 +34,12 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
 		setBoard1(pass);
         cout<<"\nThe board position after computer's turn is"<<endl;
         this->board.printBoard();
+        gamePath++;
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"\nMinmaxAB methodology won! \n\n\n GAME OVER"<<endl;
+            cout<<"\nMinmaxAB methodology won! \n GAME OVER"<<endl;
+            cout<<"\nTotal length of the game: "<<gamePath<<endl;
             break;
         }
 
@@ -50,11 +52,12 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
         alphabeta_search_result = alphaBetaSearch(this->board,peice,depth);
         this->board.dropPiece(peice, this->bestPath.back());
         this->board.printBoard();
-
+        gamePath++;
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"\nAlphaBeta methodology won! \n\n\n GAME OVER"<<endl;
+            cout<<"\nAlphaBeta methodology won! \n GAME OVER"<<endl;
+            cout<<"\nTotal length of the game: "<<gamePath<<endl;
             break;
         }
         //***********Alphabeta Logic ends********************************
