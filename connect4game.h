@@ -102,16 +102,21 @@ class Connect4Game {
         void printBoard ();
         void setBoard(int[6][7] );
         bool checkValidMove(Connect4Game,int);
+        int getScore(Connect4Game &,int , int);
 
         /**
  		* Evaluation A function for present state of board
  		*/
- 		int evalA();
+ 		int evalA(Connect4Game,int);
 
  		/**
  		* Evaluation B function for present state of board
  		*/
  		int evalB(int, int);
+ 		/**
+ 		* Evaluation C function for present state of board
+ 		*/
+ 		int evalC(Connect4Game,int);
 
 	private:
         const static int ROWS = 6;
