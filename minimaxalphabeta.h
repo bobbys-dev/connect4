@@ -23,6 +23,7 @@ class AlphaBeta {
     };
 
 public:
+   vector<int> bestPath; // keeps track of best path
 
     /**
     * alphaBetaSearch returns an action corresponding to best possible move
