@@ -12,6 +12,7 @@ class AlphaBeta {
     /**
     * Struct for hold path and desired value
     */
+    public:
     struct some_struct {
         int value;
         vector<int> mpath;
@@ -51,7 +52,7 @@ public:
    * Plays game based on computer as max player
    */
    void humanVsComputerAlphaBeta(int, int);
-private:
+
    Connect4Game gameState; //actual state of board
 
    /**

@@ -9,7 +9,7 @@ namespace AI {
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }
-vector<MiniMaxAB> bestPath;
+//vector<MiniMaxAB> bestPath;
 bool MiniMaxAB::checkWinBoard(Connect4Game board)
 {
     bool a;
@@ -24,144 +24,9 @@ bool MiniMaxAB::checkValidMoveBoard(Connect4Game board,int column)
     return b;
 }
 
-int MiniMaxAB:: getScore(MiniMaxAB &session,int row, int col)
-{
-    int score = 0,ROWS=6,COLS=7;
-    bool unblocked = true;
-    int count1 = 0;
-    //int r, c;
-    if (row < ROWS-3)
-    {
-    //check up
-    unblocked = true;
-    count1 = 0;
-        for (int r=row; r<row+4; r++)
-        {
-            if (session.board.getSlotValue(r,col) == -1)
-            {
-            unblocked = false;
-            }
-            if (session.board.getSlotValue(r,col) == 1)
-            {
-            count1 ++;
-            }
-        }
-        if (unblocked == true)
-        {
-            score = score + (count1*count1*count1*count1);
-        }
-
-        if (col < COLS-3)
-            {
-            //check up and to the right
-            unblocked = true;
-            count1 = 0;
-            for (int r=row, c=col; r<row+4; r++, c++)
-            {
-                if (session.board.getSlotValue(r,c) == -1)
-                {
-                unblocked = false;
-                }
-                if (session.board.getSlotValue(r,c) == 1)
-                {
-                count1 ++;
-                }
-            }
-                if (unblocked == true)
-                {
-                score = score + (count1*count1*count1*count1);
-                }
-            }
-    }
-
-    if (col < COLS-3)
-    {
-        //check right
-        unblocked = true;
-        count1 = 0;
-        for (int c=col; c<col+4; c++)
-        {
-            if (session.board.getSlotValue(row,c) == -1)
-            {
-                unblocked = false;
-            }
-            if (session.board.getSlotValue(row,c) == 1)
-            {
-                count1 ++;
-            }
-        }
-        if (unblocked == true)
-        {
-            score = score + (count1*count1*count1*count1);
-        }
-
-        if (row > 2)
-        {
-        //check down and to the right
-        unblocked = true;
-        count1 = 0;
-        for (int r=row, c=col; c<col+4; r--, c++)
-        {
-            if (session.board.getSlotValue(r,c) == -1)
-            {
-                unblocked = false;
-            }
-            if (session.board.getSlotValue(r,c) == 1)
-            {
-                count1 ++;
-            }
-        }
-        if (unblocked == true)
-        {
-            score = score + (count1*count1*count1*count1);
-        }
-        }
-    }
- return score;
- }
-
-
 void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
 {
-    int evaluationTable[6][7] = {{3, 4, 5, 7, 5, 4, 3},
-                                 {4, 6, 8, 10,8, 6, 4},
-                                 {5, 8, 11,13,11,8, 5},
-                                 {5, 8, 11,13,11,8, 5},
-                                 {4, 6, 8, 10,8, 6, 4},
-                                 {3, 4, 5, 7, 5, 4, 3}};
-
-        int utility = 0;
-        int sum = 0;
-        for (int i = 0; i < 6; i++)
-            for (int j = 0; j <7; j++)
-                if (session.board.getSlotValue(i,j) == 1)
-                    sum += evaluationTable[i][j];
-                else if (session.board.getSlotValue(i,j) == -1)
-                    sum -= evaluationTable[i][j];
-       // return utility + sum;
-      // cout<<"\nInside eval utility+sum= "<<utility+sum<<endl;
-    session.value=utility+sum;
-
-//    int score = 0;
-//        for (int r= 0; r < 6; r++)
-//            {
-//                if (r <= 6-4)
-//                {
-//                    for (int c = 0; c < 7; c++)
-//                    {
-//                        score += getScore(session,r,c);
-//                    }
-//                }
-//                else
-//                {
-//                    for (int c = 0; c <= 7-4; c++)
-//                    {
-//                        score += getScore(session,r,c);
-//                    }
-//                }
-//            }
-//
-// session.value= score;
+    session.value=this->board.evalA(session.board,piece);
 }
 
 void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
@@ -310,7 +175,7 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
             {
                 PT = newValue;
                 if(depth == 0)
-                bestPath.push_back(session.child[i]);
+                bestPathMinmaxAB.push_back(session.child[i]);
             }
         if(PT >= UT)
             {
@@ -334,7 +199,8 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
     {
         int pass[6][7];
         peice=1;
-        bestPath.clear();
+        win=false;
+        bestPathMinmaxAB.clear();
         temp = miniMaxSearch(board,depth,peice,100,-120);
 //        cout<<"\ntemp.value"<<temp.value;
 //        cout<<"\n\nAfter executing Minimax Search in humanVsComputer"<<endl;
@@ -345,7 +211,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 			for(int j=0;j<7;j++)
 			{
 				//find child with move 0 and then store it into board
-				pass[i][j] = bestPath[bestPath.size() -1].board.getSlotValue(i,j);
+				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
 		setBoard1(pass);
@@ -354,16 +220,28 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"******Game Over*******"<<endl;
+            cout<<"AI(MinmaxAB) won the game!! Better luck next time"<<endl;
             break;
         }
         peice=-1;
-        cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
+        win=false;
+        cout<<"\nYour turn, Enter the column number you want to drop the coin:\n"<<endl;
         cin>>columnNumber;
+        bool valid=checkValidMoveBoard(board,columnNumber);
+        if(!valid)
+        {
+            cout<<"\nInvalid column number,Enter the valid column number again:\n";
+            cin>>columnNumber;
+        }
         this->board.dropPiece(peice,columnNumber);
          cout<<"\nThe board position after your(Human) turn is"<<endl;
         this->board.printBoard();
-        checkWinBoard(board);
+        win=checkWinBoard(board);
+        if(win)
+        {
+            cout<<"Congratulations!!! You won the game"<<endl;
+            break;
+        }
     }
 cout<<"\n\nThank You";
 }

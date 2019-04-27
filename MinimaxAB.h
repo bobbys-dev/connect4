@@ -15,6 +15,7 @@ class MiniMaxAB{
         int value,dep;
         Connect4Game board;
          vector<MiniMaxAB> child;
+         vector<MiniMaxAB> bestPathMinmaxAB;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
         void humanVsComputerMinimaxAB(int,int);

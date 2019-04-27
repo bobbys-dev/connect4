@@ -279,7 +279,6 @@ bool Connect4Game::checkWin(Connect4Game board)
           (getSlotValue(r-d,c+d) == 1)) count++;
     if (count == WIN) return true;
    }
-   return false;
    }
    {
    for (int c = 0; c < 7; c++)
@@ -314,22 +313,25 @@ bool Connect4Game::checkWin(Connect4Game board)
           (getSlotValue(r-d,c+d) == -1)) count++;
    if (count == WIN) return true;
    }
-   return false;
    }
+   return false;
 }
 
 bool Connect4Game::checkValidMove(Connect4Game board,int column)
 {
-    int i;
-      if(column<0 && column>6)
+    int i,count2=0;
+      if(column<0 || column>6)
           return false;
 
       for(i=0;i<6;i++)
       {
-          if(getSlotValue(i,column)==1 || getSlotValue(i,column)==0)
-              return false;
+          if(getSlotValue(i,column)==1 || getSlotValue(i,column)==-1)
+              count2++;
       }
-  return true;
+      if(count2==6)
+        return false;
+      else
+        return true;
 }
 
 
@@ -380,8 +382,26 @@ void Connect4Game::printBoard ()
 /**
 * Evaluation A function for present state of board
 */
-int Connect4Game::evalA() {
-   //To be implmented by NP
+int Connect4Game::evalA(Connect4Game board,int peice)
+{
+   int value=0;
+       int evaluationTable[6][7] = {{3, 4, 5, 7, 5, 4, 3},
+                                 {4, 6, 8, 10,8, 6, 4},
+                                 {5, 8, 11,13,11,8, 5},
+                                 {5, 8, 11,13,11,8, 5},
+                                 {4, 6, 8, 10,8, 6, 4},
+                                 {3, 4, 5, 7, 5, 4, 3}};
+
+        int utility = 0;
+        int sum = 0;
+        for (int i = 0; i < 6; i++)
+            for (int j = 0; j <7; j++)
+                if (board.getSlotValue(i,j) == 1)
+                    sum += evaluationTable[i][j];
+                else if (board.getSlotValue(i,j) == -1)
+                    sum -= evaluationTable[i][j];
+    value=utility+sum;
+    return value;
 }
 
 /**
@@ -466,5 +486,128 @@ int Connect4Game::evalB(int playerType, int col) {
    cout << "evalB is returning util of " << util << endl << endl;
    return util;
 }
+
+int Connect4Game:: getScore(Connect4Game &board,int row, int col)
+{
+    int score = 0,ROWS=6,COLS=7;
+    bool unblocked = true;
+    int count1 = 0;
+    //int r, c;
+    if (row < ROWS-3)
+    {
+    //check up
+    unblocked = true;
+    count1 = 0;
+        for (int r=row; r<row+4; r++)
+        {
+            if (board.getSlotValue(r,col) == -1)
+            {
+            unblocked = false;
+            }
+            if (board.getSlotValue(r,col) == 1)
+            {
+            count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (col < COLS-3)
+            {
+            //check up and to the right
+            unblocked = true;
+            count1 = 0;
+            for (int r=row, c=col; r<row+4; r++, c++)
+            {
+                if (board.getSlotValue(r,c) == -1)
+                {
+                unblocked = false;
+                }
+                if (board.getSlotValue(r,c) == 1)
+                {
+                count1 ++;
+                }
+            }
+                if (unblocked == true)
+                {
+                score = score + (count1*count1*count1*count1);
+                }
+            }
+    }
+
+    if (col < COLS-3)
+    {
+        //check right
+        unblocked = true;
+        count1 = 0;
+        for (int c=col; c<col+4; c++)
+        {
+            if (board.getSlotValue(row,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (board.getSlotValue(row,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (row > 2)
+        {
+        //check down and to the right
+        unblocked = true;
+        count1 = 0;
+        for (int r=row, c=col; c<col+4; r--, c++)
+        {
+            if (board.getSlotValue(r,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (board.getSlotValue(r,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+        }
+    }
+ return score;
+ }
+
+
+int Connect4Game::evalC(Connect4Game board,int peice)
+{
+        int score = 0;
+        for (int r= 0; r < 6; r++)
+            {
+                if (r <= 6-4)
+                {
+                    for (int c = 0; c < 7; c++)
+                    {
+                        score += getScore(board,r,c);
+                    }
+                }
+                else
+                {
+                    for (int c = 0; c <= 7-4; c++)
+                    {
+                        score += getScore(board,r,c);
+                    }
+                }
+            }
+
+ return score;
+
+}
+
 
 }// end namespace AI
