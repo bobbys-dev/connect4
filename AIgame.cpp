@@ -26,7 +26,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
         MiniMaxAB temp;
         int m,columnNumber,pass[6][7];
         bool win=false;
-        peice=1;
+        peice=-1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
         temp = miniMaxSearch(board,depth,peice,100,-120);
@@ -60,7 +60,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
         //***********Minmax Logic ends***********************************
 
         //***********Alphabeta Logic begins******************************
-        peice=-1;
+        peice=1;
         win=false;
         start = high_resolution_clock::now();
         alphabeta_search_result = alphaBetaSearch(this->board,peice,depth);
