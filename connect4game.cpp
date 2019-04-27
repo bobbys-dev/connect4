@@ -279,7 +279,6 @@ bool Connect4Game::checkWin(Connect4Game board)
           (getSlotValue(r-d,c+d) == 1)) count++;
     if (count == WIN) return true;
    }
-   return false;
    }
    {
    for (int c = 0; c < 7; c++)
@@ -314,8 +313,8 @@ bool Connect4Game::checkWin(Connect4Game board)
           (getSlotValue(r-d,c+d) == -1)) count++;
    if (count == WIN) return true;
    }
-   return false;
    }
+   return false;
 }
 
 bool Connect4Game::checkValidMove(Connect4Game board,int column)
@@ -383,8 +382,26 @@ void Connect4Game::printBoard ()
 /**
 * Evaluation A function for present state of board
 */
-int Connect4Game::evalA() {
+int Connect4Game::evalA(Connect4Game board,int peice) {
    //To be implmented by NP
+   int value=0;
+       int evaluationTable[6][7] = {{3, 4, 5, 7, 5, 4, 3},
+                                 {4, 6, 8, 10,8, 6, 4},
+                                 {5, 8, 11,13,11,8, 5},
+                                 {5, 8, 11,13,11,8, 5},
+                                 {4, 6, 8, 10,8, 6, 4},
+                                 {3, 4, 5, 7, 5, 4, 3}};
+
+        int utility = 0;
+        int sum = 0;
+        for (int i = 0; i < 6; i++)
+            for (int j = 0; j <7; j++)
+                if (board.getSlotValue(i,j) == 1)
+                    sum += evaluationTable[i][j];
+                else if (board.getSlotValue(i,j) == -1)
+                    sum -= evaluationTable[i][j];
+    value=utility+sum;
+    return value;
 }
 
 /**

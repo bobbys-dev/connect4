@@ -123,24 +123,8 @@ int MiniMaxAB:: getScore(MiniMaxAB &session,int row, int col)
 
 void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
 {
-    int evaluationTable[6][7] = {{3, 4, 5, 7, 5, 4, 3},
-                                 {4, 6, 8, 10,8, 6, 4},
-                                 {5, 8, 11,13,11,8, 5},
-                                 {5, 8, 11,13,11,8, 5},
-                                 {4, 6, 8, 10,8, 6, 4},
-                                 {3, 4, 5, 7, 5, 4, 3}};
 
-        int utility = 0;
-        int sum = 0;
-        for (int i = 0; i < 6; i++)
-            for (int j = 0; j <7; j++)
-                if (session.board.getSlotValue(i,j) == 1)
-                    sum += evaluationTable[i][j];
-                else if (session.board.getSlotValue(i,j) == -1)
-                    sum -= evaluationTable[i][j];
-       // return utility + sum;
-      // cout<<"\nInside eval utility+sum= "<<utility+sum<<endl;
-    session.value=utility+sum;
+    session.value=this->board.evalA(session.board,piece);
 
 //    int score = 0;
 //        for (int r= 0; r < 6; r++)

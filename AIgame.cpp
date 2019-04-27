@@ -19,7 +19,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
         //***********Minmax Logic begins*********************************
         MiniMaxAB temp;
         int m,columnNumber,pass[6][7];
-        bool win;
+        bool win=false;
         peice=1;
         bestPathMinmaxAB.clear();
         temp = miniMaxSearch(board,depth,peice,100,-120);

@@ -106,7 +106,7 @@ class Connect4Game {
         /**
  		* Evaluation A function for present state of board
  		*/
- 		int evalA();
+ 		int evalA(Connect4Game,int);
 
  		/**
  		* Evaluation B function for present state of board
