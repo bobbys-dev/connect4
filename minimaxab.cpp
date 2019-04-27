@@ -9,7 +9,7 @@ namespace AI {
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }
-vector<MiniMaxAB> bestPath;
+//vector<MiniMaxAB> bestPath;
 bool MiniMaxAB::checkWinBoard(Connect4Game board)
 {
     bool a;
@@ -310,7 +310,7 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
             {
                 PT = newValue;
                 if(depth == 0)
-                bestPath.push_back(session.child[i]);
+                bestPathMinmaxAB.push_back(session.child[i]);
             }
         if(PT >= UT)
             {
@@ -334,7 +334,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
     {
         int pass[6][7];
         peice=1;
-        bestPath.clear();
+        bestPathMinmaxAB.clear();
         temp = miniMaxSearch(board,depth,peice,100,-120);
 //        cout<<"\ntemp.value"<<temp.value;
 //        cout<<"\n\nAfter executing Minimax Search in humanVsComputer"<<endl;
@@ -345,7 +345,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 			for(int j=0;j<7;j++)
 			{
 				//find child with move 0 and then store it into board
-				pass[i][j] = bestPath[bestPath.size() -1].board.getSlotValue(i,j);
+				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
 		setBoard1(pass);
