@@ -75,17 +75,21 @@ namespace AI {
       //switch player over for calcuations
       //for each possible column, get the highest of min's choices
       bestPath.push_back(0); //create dummy slot for next best path
+       cout << "+In maxValue. Going into loop for each hypothetical action... " << endl;
       for (int i = 0; i < playableCols.size(); i++) {
+         cout << " in maxValue. Doing hypothetical drop and checking max of results of min's possible plays" << endl;
          int m = minValue(result(gameState, playerType, playableCols.at(i)), -1*playerType, alpha, beta); //intermediate calculation
-         cout << " in maxValue. Call to minValue resulted in m="<<m<< endl;
+         cout << " in maxValue. Call to minValue resulted in m="<<m<< " for dropping into "<< playableCols.at(i) << endl;
+
          // choose max of v or m
+         // if m is higher, that means playableCols(i) is the max of min so far
          if (v < m) {
-            cout << "  v is " << v << endl;
+            cout << "  1-maxValue. v < m where v is " << v << " and m is "<< m <<" and current highest playableCols(i) is " << playableCols.at(i) << endl;
             v = m;
-            cout << "  1-maxValue. v < m where m is "<< m <<" and playableCols(i) is " << playableCols.at(i) << endl;
             bestPath.back() = playableCols.at(i);
          }
 
+         //beta is a cutoff value
          if (v >= beta) {
             cout << "  2-maxValue v is " << v << endl;
             cout << "  2-maxValue beta is " << beta << endl;
@@ -210,7 +214,8 @@ namespace AI {
         this->gameState.setDepthPlayed(maxDepth);
         cout << "Computer is " << playerType << endl << endl;
         int humanChoice;
-        for (int i = 1; i <= 21; i++) {
+        int maxRounds = 21;
+        for (int i = 1; i <= maxRounds; i++) {
                 cout<< "********************** ROUND " << i << endl;
             s = alphaBetaSearch(this->gameState, playerType, maxDepth);
             cout << "Search value returned " << s.value << endl;
@@ -224,9 +229,8 @@ namespace AI {
             playerType *= -1;
             cout << "**********************Human making move" << endl;
             //this->gameState.dropPiece(playerType,i%7+1);
-            //this->gameState.makeRandomMove(playerType);
-            cin >>humanChoice;
-            this->gameState.dropPiece(playerType,humanChoice);
+            this->gameState.makeRandomMove(playerType);
+            //cin >>humanChoice; this->gameState.dropPiece(playerType,humanChoice);
             printGameBoard();
             if (this->gameState.checkWin(this->gameState)) {
                 cout << "human won";

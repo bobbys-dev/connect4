@@ -25,7 +25,7 @@ int main()
     else if(choice==2)
     {
    //alpha beta
-        int depth = 2;
+        int depth = 1;
         session.humanVsComputerAlphaBeta(depth,1);
     }
     else
