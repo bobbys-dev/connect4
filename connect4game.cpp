@@ -320,16 +320,19 @@ bool Connect4Game::checkWin(Connect4Game board)
 
 bool Connect4Game::checkValidMove(Connect4Game board,int column)
 {
-    int i;
-      if(column<0 && column>6)
+    int i,count2=0;
+      if(column<0 || column>6)
           return false;
 
       for(i=0;i<6;i++)
       {
-          if(getSlotValue(i,column)==1 || getSlotValue(i,column)==0)
-              return false;
+          if(getSlotValue(i,column)==1 || getSlotValue(i,column)==-1)
+              count2++;
       }
-  return true;
+      if(count2==6)
+        return false;
+      else
+        return true;
 }
 
 

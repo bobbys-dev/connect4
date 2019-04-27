@@ -334,6 +334,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
     {
         int pass[6][7];
         peice=1;
+        win=false;
         bestPathMinmaxAB.clear();
         temp = miniMaxSearch(board,depth,peice,100,-120);
 //        cout<<"\ntemp.value"<<temp.value;
@@ -354,16 +355,28 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"******Game Over*******"<<endl;
+            cout<<"AI(MinmaxAB) won the game!! Better luck next time"<<endl;
             break;
         }
         peice=-1;
-        cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
+        win=false;
+        cout<<"\nYour turn, Enter the column number you want to drop the coin:\n"<<endl;
         cin>>columnNumber;
+        bool valid=checkValidMoveBoard(board,columnNumber);
+        if(!valid)
+        {
+            cout<<"\nInvalid column number,Enter the valid column number again:\n";
+            cin>>columnNumber;
+        }
         this->board.dropPiece(peice,columnNumber);
          cout<<"\nThe board position after your(Human) turn is"<<endl;
         this->board.printBoard();
-        checkWinBoard(board);
+        win=checkWinBoard(board);
+        if(win)
+        {
+            cout<<"Congratulations!!! You won the game"<<endl;
+            break;
+        }
     }
 cout<<"\n\nThank You";
 }

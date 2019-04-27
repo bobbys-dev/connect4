@@ -7,14 +7,16 @@ using namespace AI;
 
 void AIgame::MinmaxVsAlphabeta(int depth,int peice)
 {
-    //Here Minmax is max player and AlphaBeta is min player
     MiniMaxAB temp;
     int m;
     bool win;
+    AlphaBeta alphabeta_session;
+    some_struct alphabeta_search_result; //for alphabeta search results
+    this->gameState.setDepthPlayed(0); //set search depth for alphabeta
 
     for(m=0;m<22;m++)
     {
-        //***********Minmax Logic begins**************************************************
+        //***********Minmax Logic begins*********************************
         MiniMaxAB temp;
         int m,columnNumber,pass[6][7];
         bool win;
@@ -35,20 +37,27 @@ void AIgame::MinmaxVsAlphabeta(int depth,int peice)
         win=checkWinBoard(board);
         if(win)
         {
-            cout<<"******Game Over*******"<<endl;
+            cout<<"\nMinmaxAB methodology won! \n\n\n GAME OVER"<<endl;
             break;
         }
-        //***********Minmax Logic ends**************************************************
 
-        //***********Alphabeta Logic begins**************************************************
+        //***********Minmax Logic ends***********************************
+
+        //***********Alphabeta Logic begins******************************
+
         peice=-1;
-        cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
-        cin>>columnNumber;
-        this->board.dropPiece(peice,columnNumber);
-         cout<<"\nThe board position after your(Human) turn is"<<endl;
+        win=false;
+        alphabeta_search_result = alphaBetaSearch(this->board,peice,depth);
+        this->board.dropPiece(peice, this->bestPath.back());
         this->board.printBoard();
-        checkWinBoard(board);
-        //***********Alphabeta Logic ends**************************************************
+
+        win=checkWinBoard(board);
+        if(win)
+        {
+            cout<<"\nAlphaBeta methodology won! \n\n\n GAME OVER"<<endl;
+            break;
+        }
+        //***********Alphabeta Logic ends********************************
     }
 }
 
