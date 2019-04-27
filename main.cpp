@@ -25,7 +25,7 @@ int main()
     {
    //alpha beta
       AlphaBeta alphabeta_sesssion;
-      int depth = 1;
+      int depth = 2;
       alphabeta_sesssion.humanVsComputerAlphaBeta(depth,1);
     }
     else if(choice==3)
