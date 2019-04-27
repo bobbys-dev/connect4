@@ -382,8 +382,8 @@ void Connect4Game::printBoard ()
 /**
 * Evaluation A function for present state of board
 */
-int Connect4Game::evalA(Connect4Game board,int peice) {
-   //To be implmented by NP
+int Connect4Game::evalA(Connect4Game board,int peice)
+{
    int value=0;
        int evaluationTable[6][7] = {{3, 4, 5, 7, 5, 4, 3},
                                  {4, 6, 8, 10,8, 6, 4},
@@ -486,5 +486,128 @@ int Connect4Game::evalB(int playerType, int col) {
    cout << "evalB is returning util of " << util << endl << endl;
    return util;
 }
+
+int Connect4Game:: getScore(Connect4Game &board,int row, int col)
+{
+    int score = 0,ROWS=6,COLS=7;
+    bool unblocked = true;
+    int count1 = 0;
+    //int r, c;
+    if (row < ROWS-3)
+    {
+    //check up
+    unblocked = true;
+    count1 = 0;
+        for (int r=row; r<row+4; r++)
+        {
+            if (board.getSlotValue(r,col) == -1)
+            {
+            unblocked = false;
+            }
+            if (board.getSlotValue(r,col) == 1)
+            {
+            count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (col < COLS-3)
+            {
+            //check up and to the right
+            unblocked = true;
+            count1 = 0;
+            for (int r=row, c=col; r<row+4; r++, c++)
+            {
+                if (board.getSlotValue(r,c) == -1)
+                {
+                unblocked = false;
+                }
+                if (board.getSlotValue(r,c) == 1)
+                {
+                count1 ++;
+                }
+            }
+                if (unblocked == true)
+                {
+                score = score + (count1*count1*count1*count1);
+                }
+            }
+    }
+
+    if (col < COLS-3)
+    {
+        //check right
+        unblocked = true;
+        count1 = 0;
+        for (int c=col; c<col+4; c++)
+        {
+            if (board.getSlotValue(row,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (board.getSlotValue(row,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+
+        if (row > 2)
+        {
+        //check down and to the right
+        unblocked = true;
+        count1 = 0;
+        for (int r=row, c=col; c<col+4; r--, c++)
+        {
+            if (board.getSlotValue(r,c) == -1)
+            {
+                unblocked = false;
+            }
+            if (board.getSlotValue(r,c) == 1)
+            {
+                count1 ++;
+            }
+        }
+        if (unblocked == true)
+        {
+            score = score + (count1*count1*count1*count1);
+        }
+        }
+    }
+ return score;
+ }
+
+
+int Connect4Game::evalC(Connect4Game board,int peice)
+{
+        int score = 0;
+        for (int r= 0; r < 6; r++)
+            {
+                if (r <= 6-4)
+                {
+                    for (int c = 0; c < 7; c++)
+                    {
+                        score += getScore(board,r,c);
+                    }
+                }
+                else
+                {
+                    for (int c = 0; c <= 7-4; c++)
+                    {
+                        score += getScore(board,r,c);
+                    }
+                }
+            }
+
+ return score;
+
+}
+
 
 }// end namespace AI
