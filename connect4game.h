@@ -9,7 +9,7 @@
 #include <iostream> //cout
 
 using namespace std;
-
+namespace AI {
 class Connect4Game {
     public:
         /**
@@ -22,12 +22,20 @@ class Connect4Game {
         * Returns count of adjacent reds
         */
         int getConnectedReds ();
-        bool hasSurroundingReds(int, int, int);
 
         /**
         * Returns count of adjacent reds
         */
         int getConnectedBlacks ();
+
+        /**
+        * checks if board at (row,col) has any pieces that match
+        * supplied playerType parameter
+        * Input: playerType, row, and col
+        * plyaterType must = 1 for red, or = -1 for black
+        * Returns: True if there is any match, else false
+        **/
+        bool hasSurroundingPieces(int, int, int);
 
         /**
         * Returns count of all reds and black in board
@@ -42,6 +50,13 @@ class Connect4Game {
         */
         int dropPiece (int, int);
 
+        /**
+        * Mutator function that removes top piece from column
+        * Input: int column
+        * Post condition: piece from column is removed
+        */
+        void removeTopPiece (int);
+
 		/**
 		* Drop a player piece in random column
 		* Input: integer where 1 = red player, -1 = black player
@@ -50,15 +65,53 @@ class Connect4Game {
 		*/
         void makeRandomMove (int);
 
+        /**
+       * Increment depth of board.
+       * Postcondition: current_depth is incremented by 1.
+       */
+       void setDepthPlayed(int);
+
+       /**
+       * Get current depth of board. This number is used to
+       * decide if  game state has been played to a far enough depth
+       * E.g. if we've played enough turns
+       * Return: current number of turns played
+       */
+       int getDepthPlayed();
+
+       /**
+       * Return vector of columns of which a piece may be dropped
+       * in current state.
+       */
+       vector<int> getOpenColumns();
+
+       /**
+      * Return the value at given row and col
+      */
+      int getSlotValue(int /*row*/, int /*col*/);
+
+       /**
+       * Return true if there is winning player
+       */
+       bool checkWin(Connect4Game /*unused*/);
+
 		/**
 		* clear board of all pieces
 		*/
         void clearBoard();
         void printBoard ();
-        int getSlotValue(int, int);
         void setBoard(int[6][7] );
-        bool checkWin(Connect4Game);
         bool checkValidMove(Connect4Game,int);
+
+        /**
+ 		* Evaluation A function for present state of board
+ 		*/
+ 		int evalA();
+
+ 		/**
+ 		* Evaluation B function for present state of board
+ 		*/
+ 		int evalB(int, int);
 
 	private:
         const static int ROWS = 6;
@@ -66,6 +119,8 @@ class Connect4Game {
         vector<vector<int>> board;
         vector<vector<int>> reds_list;
         vector<vector<int>> black_list;
+        int current_depth; // used to count current depth of board state
 
 };
+}// end namespace AI
 #endif				//CONNECT4GAME_H guard

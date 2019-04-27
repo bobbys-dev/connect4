@@ -5,7 +5,7 @@
 using namespace std;
 
 
-namespace AB {
+namespace AI {
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }
@@ -384,7 +384,7 @@ void MiniMaxAB::clearGameBoard()
 
 int MiniMaxAB::getSlotValueBoard(int x,int y)
 {
-    this->board.getSlotValue(x,y);
+    return this->board.getSlotValue(x,y);
 }
 
 void MiniMaxAB::setBoard1(int a[6][7] )
