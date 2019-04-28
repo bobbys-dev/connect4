@@ -42,8 +42,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 			for(int j=0;j<7;j++)
 			{
 				//find child with move 0 and then store it into board
-            cout << "minmax assigning pass for where i, j=" << i << ", " << j << endl;
-
+            cout << "minmax assigning pass for where i=" << i << " j=" << j << endl;
 				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
