@@ -9,8 +9,8 @@ using namespace std::chrono;
 using namespace AI;
 
 static int gamePath=0;
-static int totalNodes=0;
 static int executionTime=0;
+static int nodes=0;
 
 void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 {
@@ -20,8 +20,8 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     AlphaBeta alphabeta_session;
     alphabeta_session.evalType = -1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(depth); //set search depth for alphabeta
-    int memorySize,nodeSize=43;
+    this->gameState.setDepthPlayed(1); //set search depth for alphabeta
+    int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<22;m++)
     {
@@ -32,13 +32,11 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
-        cout << "minmax searching..." << endl;
         temp = miniMaxSearch(board,depth,piece,100,-120);
-        cout << "..minmax done searching." << endl;
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        cout << "..minmax entering forloop." << endl;
+        nodes+=temp.totalNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -48,9 +46,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
-        cout << "..minmax exit forloop." << endl;
 		setBoard1(pass);
-        cout<<"\nThe board after minmax turn is"<<endl;
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
@@ -66,13 +62,11 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=-1;
         win=false;
         start = high_resolution_clock::now();
-        cout << "alphabeta searching..." << endl;
         alphabeta_search_result = alphaBetaSearch(this->board,piece,depth);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
         this->board.dropPiece(piece, this->bestPath.back());
-        cout<<"\nThe board position after alphabeta turn is"<<endl;
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
@@ -86,8 +80,11 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 
     //print game statistics and end
       cout<<"\nTotal length of the game: "<< gamePath;
-      cout<<"\nTotal number of nodes generated and expanded are: "<< (totalNodes +1 + nodesGenerated.size()) ;
-      memorySize=(totalNodes+1)*nodeSize + nodesGenerated.size();
-      cout<<"\nThe size of memory used by the program: "<< memorySize;
+      cout<<"\nTotal number of nodes generated and expanded for MinimaxAB are: "<< (nodes +1)<<endl;
+      cout<<"\nTotal number of nodes generated and expanded for AlphaBetaSearch are: "<< nodesGenerated.size()<<endl ;
+      memorySize1=(nodes+1)*nodeSize;
+      memorySize2=nodesGenerated.size();
+      cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
+      cout<<"\nThe size of memory used by the AlphaBetaSearch: "<< memorySize2;
       cout <<"\nExecution time: "<< executionTime << endl;
 }

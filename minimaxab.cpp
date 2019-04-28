@@ -6,7 +6,6 @@
 using namespace std;
 using namespace std::chrono;
 
-
 namespace AI {
 
 static int gamePath=0;
@@ -270,7 +269,7 @@ cout<<"\n\nThank You";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 1;
+    return d >= 2;
 }
 
 void MiniMaxAB::printGameBoard()
