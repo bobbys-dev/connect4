@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace std::chrono;
-static int nodes1=0;
+static int a;
 namespace AI {
 
 static int gamePath=0;
@@ -151,6 +151,7 @@ void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
 
 MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT)
 {
+    int nodes1=0;
     unsigned int i;
     MiniMaxAB session;
     session.board=board;
@@ -184,14 +185,13 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
             }
         if(PT >= UT)
             {
+                nodes1++;
+                a=nodes1;
                 session.child[i].value=PT;
-                session.child[i].totalNodes=nodes1;
-                cout<<" INNER NODES    "<<session.child[i].totalNodes<<endl;
+                session.child[i].totalNodes=a;
                 return session.child[i];
             }
     }
-    session.totalNodes=nodes1;
-    cout<<" OUTER NODES    "<<session.totalNodes<<endl;
 	session.value=PT;
 	return session;
 }
