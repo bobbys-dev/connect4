@@ -631,7 +631,8 @@ int Connect4Game::evalBMinmax(Connect4Game board,int peice)
    //get first nonempty row at column
    int row = 0;
    int col=board.curCol;
-   while (board.getSlotValue(row,col) != 0 && row < ROWS) {
+   while (row < ROWS && board.getSlotValue(row,col) != 0) {
+
       row++;
    }
 

@@ -19,9 +19,9 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     int m;
     bool win;
     AlphaBeta alphabeta_session;
-    alphabeta_session.evalType = -1; // tell alphabeta which eval to run
+    alphabeta_session.evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(3); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(5); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<22;m++)

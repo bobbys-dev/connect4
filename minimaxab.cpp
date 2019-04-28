@@ -30,7 +30,7 @@ bool MiniMaxAB::checkValidMoveBoard(Connect4Game board,int column)
 
 void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
 {
-    session.value=this->board.evalCMinmax(session.board,piece);
+    session.value=this->board.evalBMinmax(session.board,piece);
 }
 
 void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
@@ -192,6 +192,7 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
                 return session.child[i];
             }
     }
+    session.totalNodes=a;
 	session.value=PT;
 	return session;
 }
@@ -272,7 +273,7 @@ cout<<"\n\nThank You";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 2;
+    return d >= 6;
 }
 
 void MiniMaxAB::printGameBoard()
