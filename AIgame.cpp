@@ -11,6 +11,7 @@ using namespace AI;
 static int gamePath=0;
 static int executionTime=0;
 static int nodes=0;
+static int nodes2=0;
 
 void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 {
@@ -20,7 +21,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     AlphaBeta alphabeta_session;
     alphabeta_session.evalType = -1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(4); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(1); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<22;m++)
@@ -66,6 +67,9 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
         this->board.dropPiece(piece, this->bestPath.back());
+        nodes2 += nodesGenerated.size();
+        vector<int> ng;
+        nodesGenerated = ng; // reset nodes generated
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
@@ -80,9 +84,9 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     //print game statistics and end
       cout<<"\nTotal length of the game: "<< gamePath;
       cout<<"\nTotal number of nodes generated and expanded for MinimaxAB are: "<< (nodes +1)<<endl;
-      cout<<"\nTotal number of nodes generated and expanded for AlphaBetaSearch are: "<< nodesGenerated.size()<<endl ;
+      cout<<"\nTotal number of nodes generated and expanded for AlphaBetaSearch are: "<< nodes2 << endl ;
       memorySize1=(nodes+1)*nodeSize;
-      memorySize2=nodesGenerated.size();
+      memorySize2= nodes2;
       cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
       cout<<"\nThe size of memory used by the AlphaBetaSearch: "<< memorySize2;
       cout <<"\nExecution time: "<< executionTime << endl;

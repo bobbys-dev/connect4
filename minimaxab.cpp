@@ -272,7 +272,7 @@ cout<<"\n\nThank You";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 4;
+    return d >= 2;
 }
 
 void MiniMaxAB::printGameBoard()
