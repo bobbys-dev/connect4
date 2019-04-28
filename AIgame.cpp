@@ -32,17 +32,22 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         auto start = high_resolution_clock::now();
         cout << "minmax searching..." << endl;
         temp = miniMaxSearch(board,depth,piece,100,-120);
+        cout << "..minmax done searching." << endl;
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
+        cout << "..minmax entering forloop." << endl;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
 			{
 				//find child with move 0 and then store it into board
+            cout << "minmax assigning pass for where i, j=" << i << ", " << j << endl;
+
 				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
+      cout << "..minmax exit forloop." << endl;
 		setBoard1(pass);
         cout<<"\nThe board after minmax turn is"<<endl;
         this->board.printBoard();
