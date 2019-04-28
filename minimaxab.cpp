@@ -28,9 +28,15 @@ bool MiniMaxAB::checkValidMoveBoard(Connect4Game board,int column)
     return b;
 }
 
-void MiniMaxAB::Eval(MiniMaxAB &session, int piece)
+void MiniMaxAB::Eval(MiniMaxAB &session, int piece,int evalType)
 {
-    session.value=this->board.evalBMinmax(session.board,piece);
+    if(evalType==1)
+    {
+        session.value=this->board.evalCMinmax(session.board,piece);
+
+    }
+    else
+        session.value=this->board.evalBMinmax(session.board,piece);
 }
 
 void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
@@ -149,7 +155,7 @@ void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
 }
 
 
-MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT)
+MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT,int evalType)
 {
     int nodes1=0;
     unsigned int i;
@@ -157,7 +163,7 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
     session.board=board;
     if(deepEnough(depth))
     {
-        Eval(session,piece);
+        Eval(session,piece,evalType);
         if(piece==-1)
             session.value*=-1;
         return session;
@@ -167,14 +173,14 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
     //cout<<"\nThe child size is:"<<session.child.size()<<endl;
     if(session.child.size()==0)
     {
-        Eval(session,piece);
+        Eval(session,piece,evalType);
         if(piece==-1)
             session.value*=-1;
         return session;
     }
     for(i=0;i<session.child.size();i++)
     {
-        MiniMaxAB Successor= miniMaxSearch(session.child[i].board,depth+1,(-1*piece),(-1*PT),(-1*UT));
+        MiniMaxAB Successor= miniMaxSearch(session.child[i].board,depth+1,(-1*piece),(-1*PT),(-1*UT),evalType);
         int newValue=-1*Successor.value;
         if(newValue > PT)
             {
@@ -273,7 +279,7 @@ cout<<"\n\nThank You";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 7;
+    return d >= 3;
 }
 
 void MiniMaxAB::printGameBoard()
