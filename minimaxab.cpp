@@ -5,7 +5,7 @@
 
 using namespace std;
 using namespace std::chrono;
-
+static int nodes1=0;
 namespace AI {
 
 static int gamePath=0;
@@ -180,15 +180,18 @@ MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int 
                 PT = newValue;
                 if(depth == 0)
                 bestPathMinmaxAB.push_back(session.child[i]);
-                session.totalNodes++;
+                nodes1++;
             }
         if(PT >= UT)
             {
                 session.child[i].value=PT;
-                session.totalNodes++;
+                session.child[i].totalNodes=nodes1;
+                cout<<" INNER NODES    "<<session.child[i].totalNodes<<endl;
                 return session.child[i];
             }
     }
+    session.totalNodes=nodes1;
+    cout<<" OUTER NODES    "<<session.totalNodes<<endl;
 	session.value=PT;
 	return session;
 }
@@ -269,7 +272,7 @@ cout<<"\n\nThank You";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 2;
+    return d >= 4;
 }
 
 void MiniMaxAB::printGameBoard()
