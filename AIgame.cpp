@@ -36,7 +36,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes+=temp.totalNodes;
+        nodes=temp.totalNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -110,7 +110,7 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes+=temp1.totalNodes;
+        nodes=temp1.totalNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -137,7 +137,7 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes+=temp2.totalNodes;
+        nodes=temp2.totalNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
