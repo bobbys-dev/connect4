@@ -158,7 +158,6 @@ int Connect4Game::dropPiece (int piece, int col)
 }
 
 void Connect4Game::removeTopPiece(int col) {
-//  cout << "In removeTopPiece()..." << endl;
 
     int row = 0;
     if (col >= 0 && col < this->COLS) {
@@ -182,11 +181,6 @@ void Connect4Game::makeRandomMove(int player)
 {
     if (player == 1 || player == -1) {
         int col = rand()% this->COLS;
-        if (player == 1) {
-            // cout << "Randomly dropping R into col index " << col <<"\n";
-        } else {
-            // cout << "Randomly dropping B into col index " << col <<"\n";
-        }
        this->dropPiece(player, col);
     }
 
@@ -334,7 +328,6 @@ bool Connect4Game::checkValidMove(Connect4Game board,int column)
         return true;
 }
 
-
 /**
 * Clear pieces from board
 */
@@ -410,12 +403,8 @@ int Connect4Game::evalA(Connect4Game board,int peice)
 */
 int Connect4Game::evalBAlphaBeta(int playerType, int col) {
     playerType = 1;
-    // cout << "In evalB, computing util for col " << col << endl;
-
 
     //test if connect4
-    // cout << " testing for connect 4" << col << endl;
-
     this->dropPiece(playerType,col);
     if(this->checkWin(*this)){
         return 1000; //highest weight
@@ -477,13 +466,8 @@ int Connect4Game::evalBAlphaBeta(int playerType, int col) {
         }
     }
 
-    // cout << "  util... for possible piece="<< playerType<< " to drop in row, col " << row << ", "<< col << endl;
-    // cout << "   util... (middleCol - abs(middleCol - col)) is " << (middleCol - abs(middleCol - col)) << endl;
-    // cout << "   util... surroundingPieces is " << surroundingPieces << endl;
-
    // add utility of intermediate values
    int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
-   // cout << "evalB is returning util of " << util << endl << endl;
    return util;
 }
 
