@@ -16,7 +16,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     int m;
     bool win;
     AlphaBeta alphabeta_session;
-    alphabeta_session.evalType = 1; // tell alphabeta which eval to run
+    alphabeta_session.evalType = -1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
     this->gameState.setDepthPlayed(depth); //set search depth for alphabeta
     int memorySize,nodeSize=43;
@@ -30,6 +30,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=-1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
+        cout << "minmax searching..." << endl;
         temp = miniMaxSearch(board,depth,piece,100,-120);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
@@ -43,7 +44,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 			}
 		}
 		setBoard1(pass);
-        cout<<"\nThe board position after computer's turn is"<<endl;
+        cout<<"\nThe board after minmax turn is"<<endl;
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
@@ -59,11 +60,13 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=1;
         win=false;
         start = high_resolution_clock::now();
+        cout << "alphabeta searching..." << endl;
         alphabeta_search_result = alphaBetaSearch(this->board,piece,depth);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
         this->board.dropPiece(piece, this->bestPath.back());
+        cout<<"\nThe board position after alphabeta turn is"<<endl;
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);

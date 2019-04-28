@@ -26,7 +26,6 @@ int main()
     {
    //alpha beta
       AlphaBeta alphabeta_session;
-      alphabeta_session.evalType = 1; //1 for evalB
       alphabeta_session.humanVsComputerAlphaBeta(searchDepth,1);
     }
     else if(choice==3)

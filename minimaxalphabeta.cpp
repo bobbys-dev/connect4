@@ -178,6 +178,7 @@ namespace AI {
         srand(0);
         cout << "Playing Human VS CPU with search depth=" << maxDepth << endl;
         this->gameState.setDepthPlayed(maxDepth);
+        this->evalType = -1;
         cout << "Computer is " << playerType << endl << endl;
         int humanChoice;
         int maxRounds = 21;
