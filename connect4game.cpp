@@ -419,48 +419,55 @@ int Connect4Game::evalBAlphaBeta(int playerType, int col) {
    while (row < this->ROWS && this->board.at(row).at(col) != 0) {
       row++;
    }
-
+   cout<< endl <<"evB row is " << row << " col is " << col <<  endl;
    //check if inserting piece at row will make a connection
     // score 1 for any surrounding pieces
    int surroundingPieces = 0;
 
+   // below
+   if (row > 0) {
+     if(this->getSlotValue(row-1,col) == playerType) {
+        surroundingPieces++;
+     }
+   }
+
     // upper right
-    if(row < this->ROWS - 1 && col < this->COLS - 1) {
+    if((row < this->ROWS - 1) && (col < this->COLS - 1)) {
         if(this->getSlotValue(row+1,col+1) == playerType){
             surroundingPieces++;
         }
     }
 
     // upper left
-    if(row < this->ROWS - 1 && col > 0) {
+    if((row < this->ROWS - 1) && (col > 0)) {
         if(this->getSlotValue(row+1,col-1) == playerType){
             surroundingPieces++;
         }
     }
 
     // right
-    if(row < this->ROWS && col < this->COLS - 1) {
+    if((row < this->ROWS) && (col < this->COLS - 1)) {
         if(this->getSlotValue(row,col+1) == playerType){
             surroundingPieces++;
         }
     }
 
     // left
-    if(row < this->ROWS && col > 0) {
+    if((row < this->ROWS) && (col > 0)) {
         if(this->getSlotValue(row,col-1) == playerType){
             surroundingPieces++;
         }
     }
 
     // lower right
-    if(row > 0 && col < this->COLS - 1) {
+    if((row > 0) && (col < this->COLS - 1)) {
         if(this->getSlotValue(row-1,col+1) == playerType){
             surroundingPieces++;
         }
     }
 
     // lower left
-    if(row > 0 && col > 0) {
+    if((row > 0) && (col > 0)) {
         if(this->getSlotValue(row-1,col-1) == playerType){
             surroundingPieces++;
         }
@@ -468,6 +475,7 @@ int Connect4Game::evalBAlphaBeta(int playerType, int col) {
 
    // add utility of intermediate values
    int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
+
    return util;
 }
 
