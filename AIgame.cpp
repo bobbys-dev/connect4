@@ -1,4 +1,6 @@
 #include "AIgame.h"
+#include "MiniMaxAB.h"
+#include "minimaxalphabeta.h"
 #include<iostream>
 #include <chrono>
 
@@ -27,7 +29,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         MiniMaxAB temp;
         int m,columnNumber,pass[6][7];
         bool win=false;
-        piece=-1;
+        piece=1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
         cout << "minmax searching..." << endl;
@@ -42,11 +44,11 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 			for(int j=0;j<7;j++)
 			{
 				//find child with move 0 and then store it into board
-            cout << "minmax assigning pass for where i=" << i << " j=" << j << endl;
+                cout << "minmax assigning pass for where i=" << i << " j=" << j << endl;
 				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
-      cout << "..minmax exit forloop." << endl;
+        cout << "..minmax exit forloop." << endl;
 		setBoard1(pass);
         cout<<"\nThe board after minmax turn is"<<endl;
         this->board.printBoard();
@@ -61,7 +63,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         //***********Minmax Logic ends***********************************
 
         //***********Alphabeta Logic begins******************************
-        piece=1;
+        piece=-1;
         win=false;
         start = high_resolution_clock::now();
         cout << "alphabeta searching..." << endl;
