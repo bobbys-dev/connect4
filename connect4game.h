@@ -112,19 +112,20 @@ class Connect4Game {
  		/**
  		* Evaluation B function for present state of board
  		*/
- 		int evalB(int, int);
+ 		int evalBAlphaBeta(int, int);
+ 		int evalBMinmax(Connect4Game,int);
  		/**
  		* Evaluation C function for present state of board
  		*/
- 		int evalC(Connect4Game,int);
-
-	private:
+ 		int evalCMinmax(Connect4Game,int);
+ 		int evalCAlphaBeta(int,int);
+        int curCol;
+	//private:
         const static int ROWS = 6;
         const static int COLS = 7;
         vector<vector<int>> board;
-        vector<vector<int>> reds_list;
-        vector<vector<int>> black_list;
         int current_depth; // used to count current depth of board state
+
 
 };
 }// end namespace AI

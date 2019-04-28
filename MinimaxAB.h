@@ -16,13 +16,14 @@ class MiniMaxAB{
         Connect4Game board;
          vector<MiniMaxAB> child;
          vector<MiniMaxAB> bestPathMinmaxAB;
+         int totalNodes=0;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
         void humanVsComputerMinimaxAB(int,int);
 
 
         /** Function for MinimaxAB algorithm*/
-        MiniMaxAB miniMaxSearch(Connect4Game&,int,int,int,int);
+        MiniMaxAB miniMaxSearch(Connect4Game&,int,int,int,int,int=1);
 
         /**
         * Check if max depth is reached
@@ -36,7 +37,7 @@ class MiniMaxAB{
 
 
         /**Function which evaluates the board position and returns the number*/
-        void Eval(MiniMaxAB &,int);
+        void Eval(MiniMaxAB &,int,int);
         int getScore(MiniMaxAB &,int, int);
         void printGameBoard();
         void clearGameBoard();

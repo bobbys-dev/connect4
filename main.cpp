@@ -10,8 +10,9 @@ int main()
 {
 
     int choice;
+    int searchDepth = 0; // change this for different search depth desired
     cout<<"\nCONNECT FOUR GAME"<<endl;
-    cout<<"\nEnter the mode from the following:\n1.Human vs Computer(MinimaxAB)\n2.Human vs Computer(AlphaBeta)\n3. Computer(MinmaxAB) vs Computer(Alphabeta)\n";
+    cout<<"\nEnter the mode from the following:\n1.Human vs Computer(MinimaxAB)\n2.Human vs Computer(AlphaBeta)\n3. Computer(MinmaxAB) vs Computer(Alphabeta)\n4. Computer(MinmaxAB) vs Computer(MinmaxAB)\n5. Computer(Alphabeta) Vs Computer(Alphabeta)\n";
     cin>>choice;
 
     if(choice==1)
@@ -24,14 +25,23 @@ int main()
     else if(choice==2)
     {
    //alpha beta
-      AlphaBeta alphabeta_sesssion;
-      int depth = 2;
-      alphabeta_sesssion.humanVsComputerAlphaBeta(depth,1);
+      AlphaBeta alphabeta_session;
+      alphabeta_session.humanVsComputerAlphaBeta(searchDepth,1);
     }
     else if(choice==3)
     {
         AIgame aiGame_session;
         aiGame_session.MinmaxVsAlphabeta(0,1);
+    }
+    else if(choice==4)
+    {
+        AIgame aiGame_session;
+        aiGame_session.MinmaxVsMinmax(0,1);
+    }
+    else if(choice==5)
+    {
+      AIgame aiGame_session;
+      aiGame_session.AlphaBetaVsAlphaBeta(0,1);
     }
     else
     {

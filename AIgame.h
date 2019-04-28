@@ -12,6 +12,8 @@ namespace AI
     {
         public:
         void MinmaxVsAlphabeta(int,int);
+        void MinmaxVsMinmax(int,int);
+        void AlphaBetaVsAlphaBeta(int ,int );
     };
 }
 #endif // AIGAME_H_INCLUDED

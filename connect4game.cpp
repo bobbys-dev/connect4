@@ -158,7 +158,6 @@ int Connect4Game::dropPiece (int piece, int col)
 }
 
 void Connect4Game::removeTopPiece(int col) {
-//  cout << "In removeTopPiece()..." << endl;
 
     int row = 0;
     if (col >= 0 && col < this->COLS) {
@@ -182,11 +181,6 @@ void Connect4Game::makeRandomMove(int player)
 {
     if (player == 1 || player == -1) {
         int col = rand()% this->COLS;
-        if (player == 1) {
-            // cout << "Randomly dropping R into col index " << col <<"\n";
-        } else {
-            // cout << "Randomly dropping B into col index " << col <<"\n";
-        }
        this->dropPiece(player, col);
     }
 
@@ -334,7 +328,6 @@ bool Connect4Game::checkValidMove(Connect4Game board,int column)
         return true;
 }
 
-
 /**
 * Clear pieces from board
 */
@@ -408,14 +401,10 @@ int Connect4Game::evalA(Connect4Game board,int peice)
 * Evaluation B function for present state of board
 * Returns 'goodness' of playing a column
 */
-int Connect4Game::evalB(int playerType, int col) {
-    playerType = 1;
-    // cout << "In evalB, computing util for col " << col << endl;
-
+int Connect4Game::evalBAlphaBeta(int playerType, int col) {
+    //playerType = 1;
 
     //test if connect4
-    // cout << " testing for connect 4" << col << endl;
-
     this->dropPiece(playerType,col);
     if(this->checkWin(*this)){
         return 1000; //highest weight
@@ -427,7 +416,7 @@ int Connect4Game::evalB(int playerType, int col) {
 
    //get first nonempty row at column
    int row = 0;
-   while (this->board.at(row).at(col) != 0 && row < this->ROWS) {
+   while (row < this->ROWS && this->board.at(row).at(col) != 0) {
       row++;
    }
 
@@ -477,13 +466,8 @@ int Connect4Game::evalB(int playerType, int col) {
         }
     }
 
-    // cout << "  util... for possible piece="<< playerType<< " to drop in row, col " << row << ", "<< col << endl;
-    // cout << "   util... (middleCol - abs(middleCol - col)) is " << (middleCol - abs(middleCol - col)) << endl;
-    // cout << "   util... surroundingPieces is " << surroundingPieces << endl;
-
    // add utility of intermediate values
    int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
-   // cout << "evalB is returning util of " << util << endl << endl;
    return util;
 }
 
@@ -584,7 +568,7 @@ int Connect4Game:: getScore(Connect4Game &board,int row, int col)
  }
 
 
-int Connect4Game::evalC(Connect4Game board,int peice)
+int Connect4Game::evalCMinmax(Connect4Game board,int peice)
 {
         int score = 0;
         for (int r= 0; r < 6; r++)
@@ -606,6 +590,97 @@ int Connect4Game::evalC(Connect4Game board,int peice)
             }
 
  return score;
+
+}
+
+int Connect4Game::evalCAlphaBeta(int playerType, int col)
+{
+    Connect4Game tempBoard;
+    tempBoard.board=this->board;
+    tempBoard.dropPiece(playerType,col);
+            int score = 0;
+        for (int r= 0; r < 6; r++)
+            {
+                if (r <= 6-4)
+                {
+                    for (int c = 0; c < 7; c++)
+                    {
+                        score += getScore(tempBoard,r,c);
+                    }
+                }
+                else
+                {
+                    for (int c = 0; c <= 7-4; c++)
+                    {
+                        score += getScore(tempBoard,r,c);
+                    }
+                }
+            }
+
+ return score;
+}
+
+int Connect4Game::evalBMinmax(Connect4Game board,int peice)
+{
+    int ROWS=6;
+    int COLS=7;
+    int playerType=peice;
+
+    if(checkWin(board)==true)
+        return 1000;
+      //column 3 is the best col to start with
+   int middleCol = (COLS - 1) / 2;
+
+   //get first nonempty row at column
+   int row = 0;
+   int col=board.curCol;
+   while (row < ROWS && board.getSlotValue(row,col) != 0) {
+
+      row++;
+   }
+
+   //check if inserting piece at row will make a connection
+    // score 1 for any surrounding pieces
+   int surroundingPieces = 0;
+    // upper right
+    if(row < ROWS - 1 && col < COLS - 1) {
+        if(board.getSlotValue(row+1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // upper left
+    if(row < ROWS - 1 && col > 0) {
+        if(board.getSlotValue(row+1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // right
+    if(row < ROWS && col < COLS - 1) {
+        if(board.getSlotValue(row,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // left
+    if(row < ROWS && col > 0) {
+        if(board.getSlotValue(row,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // lower right
+    if(row > 0 && col < COLS - 1) {
+        if(board.getSlotValue(row-1,col+1) == playerType){
+            surroundingPieces++;
+        }
+    }
+    // lower left
+    if(row > 0 && col > 0) {
+        if(board.getSlotValue(row-1,col-1) == playerType){
+            surroundingPieces++;
+        }
+    }
+   // add utility of intermediate values
+   int util =  (middleCol - abs(middleCol - col))*3 + surroundingPieces;
+   return util;
 
 }
 
