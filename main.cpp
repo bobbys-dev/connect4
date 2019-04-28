@@ -40,7 +40,8 @@ int main()
     }
     else if(choice==5)
     {
-
+      AIgame aiGame_session;
+      aiGame_session.AlphaBetaVsAlphaBeta(0,1);
     }
     else
     {

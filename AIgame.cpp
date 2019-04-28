@@ -18,10 +18,9 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     MiniMaxAB temp;
     int m;
     bool win;
-    AlphaBeta alphabeta_session;
-    alphabeta_session.evalType = 1; // tell alphabeta which eval to run
+    this->evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(8); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(1); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<22;m++)
@@ -61,8 +60,9 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         //***********Alphabeta Logic begins******************************
         piece=-1;
         win=false;
+        this->gameState.board = this->board.board; //transfer board to alpabeta
         start = high_resolution_clock::now();
-        alphabeta_search_result = alphaBetaSearch(this->board,piece,depth);
+        alphabeta_search_result = alphaBetaSearch(this->gameState,piece,depth);
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
@@ -164,7 +164,71 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
       cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
       cout <<"\nExecution time: "<< executionTime << endl;
 }
+
 void AIgame::AlphaBetaVsAlphaBeta(int depth,int piece)
 {
+
+   int nodeCount1 = 0;
+   int nodeCount2 = 0;
+   some_struct alphabeta_search_result; //for alphabeta search results
+   this->gameState.setDepthPlayed(2); //set search depth for alphabeta
+
+   for(int m=1;m<22;m++)
+   {
+      cout << "Round " << m << endl;
+      //***********Player 1 logic begins*********************************
+      this->evalType = 1; // tell alphabeta which eval to run
+      piece=1;
+      auto start = high_resolution_clock::now();
+      alphabeta_search_result = alphaBetaSearch(this->gameState,piece,depth);
+      auto stop = high_resolution_clock::now();
+      auto duration = duration_cast<microseconds>(stop - start);
+      executionTime += duration.count();
+      this->gameState.dropPiece(piece, this->bestPath.back());
+      nodeCount1 += nodesGenerated.size();
+      vector<int> ng;
+      nodesGenerated = ng; // reset nodes generated
+      this->gameState.printBoard();
+      gamePath++;
+      if(checkWinBoard(gameState))
+      {
+         cout<<"\nEvaluation function 1 won! \n GAME OVER"<<endl;
+         break; //stop game
+      }
+
+      //***********Player 1 Logic ends***********************************
+
+      //***********Alphabeta Logic begins******************************
+      this->evalType = -1; // tell alphabeta which eval to run
+      piece=-1;
+      start = high_resolution_clock::now();
+      alphabeta_search_result = alphaBetaSearch(this->gameState,piece,depth);
+      stop = high_resolution_clock::now();
+      duration = duration_cast<microseconds>(stop - start);
+      executionTime += duration.count();
+      this->gameState.dropPiece(piece, this->bestPath.back());
+      nodeCount2 += nodesGenerated.size();
+      vector<int> ng2;
+      nodesGenerated = ng2; // reset nodes generated
+      this->gameState.printBoard();
+      gamePath++;
+      if(checkWinBoard(gameState))
+      {
+         cout<<"\nEvaluation function 2 won! \n GAME OVER"<<endl;
+         break; //stop game
+      }
+      //***********Alphabeta Logic ends********************************
+   }
+
+   //print game statistics and end
+     cout<<"\nTotal length of the game: "<< gamePath;
+     cout<<"\nTotal number of nodes generated and expanded for Eval 1: "<< nodeCount1 <<endl;
+     cout<<"\nTotal number of nodes generated and expanded for Eval 2: "<< nodeCount2 << endl ;
+     int memorySize1= nodeCount1;
+     int memorySize2= nodeCount2;
+     cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
+     cout<<"\nThe size of memory used by the AlphaBetaSearch: "<< memorySize2;
+     cout <<"\nExecution time: "<< executionTime << endl;
+
 
 }

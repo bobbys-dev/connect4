@@ -402,7 +402,7 @@ int Connect4Game::evalA(Connect4Game board,int peice)
 * Returns 'goodness' of playing a column
 */
 int Connect4Game::evalBAlphaBeta(int playerType, int col) {
-    playerType = 1;
+    //playerType = 1;
 
     //test if connect4
     this->dropPiece(playerType,col);

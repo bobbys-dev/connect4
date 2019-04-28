@@ -29,7 +29,7 @@ namespace AI {
       Connect4Game gameState, int playerType, int alpha, int beta){
 
         vector<int> playableCols = actions(gameState);
-
+        // cout << "In max value with current depth of "<< gameState.getDepthPlayed() << endl;
         // check if deep enough
         if ( cutoffTest(gameState) ) {
             int maxEval = INT_MIN;
@@ -84,6 +84,7 @@ namespace AI {
       Connect4Game gameState, int playerType, int alpha, int beta) {
 
         vector<int> playableCols = actions(gameState);
+        // cout << "In min value with current depth of "<< gameState.getDepthPlayed() << endl;
 
         if ( cutoffTest(gameState) ) {
             int minEval = INT_MAX;
@@ -112,7 +113,7 @@ namespace AI {
       // must decrement current depth before next set of recursive calls
       gameState.setDepthPlayed( gameState.getDepthPlayed() - 1);
       //for each possible column, get the min of max's values
-      playerType *= -1;
+      //playerType *= -1;
       bestPath.push_back(0); //create dummy slot for next best path
       for (int i = 0; i < playableCols.size(); i++) {
          int m = maxValue(result(gameState, playerType, playableCols.at(i)), -1*playerType, alpha, beta); //intermediate calculation
@@ -203,8 +204,8 @@ namespace AI {
             }
             playerType *= -1;
             cout << "********** Human making move" << endl;
-            //this->gameState.makeRandomMove(playerType);
-            cin >> humanChoice; this->gameState.dropPiece(playerType,humanChoice);
+            this->gameState.dropPiece(playerType, i%7);
+            //cin >> humanChoice; this->gameState.dropPiece(playerType,humanChoice);
             plyCount++;
             printGameBoard();
             if (this->gameState.checkWin(this->gameState)) {

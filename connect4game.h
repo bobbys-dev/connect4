@@ -120,7 +120,7 @@ class Connect4Game {
  		int evalCMinmax(Connect4Game,int);
  		int evalCAlphaBeta(int,int);
         int curCol;
-	private:
+	//private:
         const static int ROWS = 6;
         const static int COLS = 7;
         vector<vector<int>> board;
