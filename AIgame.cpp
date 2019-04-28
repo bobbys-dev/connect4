@@ -171,26 +171,27 @@ void AIgame::AlphaBetaVsAlphaBeta(int depth,int piece)
    int nodeCount1 = 0;
    int nodeCount2 = 0;
    some_struct alphabeta_search_result; //for alphabeta search results
-   this->gameState.setDepthPlayed(2); //set search depth for alphabeta
+   this->board.setDepthPlayed(3); //set search depth for alphabeta
+   this->evalType = -1; // tell alphabeta which eval to run
 
    for(int m=1;m<22;m++)
    {
       cout << "Round " << m << endl;
       //***********Player 1 logic begins*********************************
-      this->evalType = 1; // tell alphabeta which eval to run
+      this->evalType *= -1; // tell alphabeta which eval to run
       piece=1;
       auto start = high_resolution_clock::now();
-      alphabeta_search_result = alphaBetaSearch(this->gameState,piece,depth);
+      alphabeta_search_result = alphaBetaSearch(this->board,piece,depth);
       auto stop = high_resolution_clock::now();
       auto duration = duration_cast<microseconds>(stop - start);
       executionTime += duration.count();
-      this->gameState.dropPiece(piece, this->bestPath.back());
+      this->board.dropPiece(piece, this->bestPath.back());
       nodeCount1 += nodesGenerated.size();
       vector<int> ng;
       nodesGenerated = ng; // reset nodes generated
-      this->gameState.printBoard();
+      this->board.printBoard();
       gamePath++;
-      if(checkWinBoard(gameState))
+      if(checkWinBoard(board))
       {
          cout<<"\nEvaluation function 1 won! \n GAME OVER"<<endl;
          break; //stop game
@@ -199,20 +200,20 @@ void AIgame::AlphaBetaVsAlphaBeta(int depth,int piece)
       //***********Player 1 Logic ends***********************************
 
       //***********Alphabeta Logic begins******************************
-      this->evalType = -1; // tell alphabeta which eval to run
+      this->evalType *= -1; // tell alphabeta which eval to run
       piece=-1;
       start = high_resolution_clock::now();
-      alphabeta_search_result = alphaBetaSearch(this->gameState,piece,depth);
+      alphabeta_search_result = alphaBetaSearch(this->board,piece,depth);
       stop = high_resolution_clock::now();
       duration = duration_cast<microseconds>(stop - start);
       executionTime += duration.count();
-      this->gameState.dropPiece(piece, this->bestPath.back());
+      this->board.dropPiece(piece, this->bestPath.back());
       nodeCount2 += nodesGenerated.size();
       vector<int> ng2;
       nodesGenerated = ng2; // reset nodes generated
-      this->gameState.printBoard();
+      this->board.printBoard();
       gamePath++;
-      if(checkWinBoard(gameState))
+      if(checkWinBoard(board))
       {
          cout<<"\nEvaluation function 2 won! \n GAME OVER"<<endl;
          break; //stop game

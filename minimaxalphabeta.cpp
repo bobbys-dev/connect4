@@ -59,8 +59,9 @@ namespace AI {
       //switch player over for calcuations
       //for each possible column, get the highest of min's choices
       bestPath.push_back(0); //create dummy slot for next best path
+      //this->evalType *= -1; //uncomment to run alpha vs alpha
       for (int i = 0; i < playableCols.size(); i++) {
-         int m = minValue(result(gameState, playerType, playableCols.at(i)), -1*playerType, alpha, beta); //intermediate calculation
+         int m = minValue(result(gameState, playerType, playableCols.at(i)), 1*playerType, alpha, beta); //intermediate calculation
 
          // choose max of v or m
          // if m is higher, that means playableCols(i) is the max of min so far
@@ -115,6 +116,7 @@ namespace AI {
       //for each possible column, get the min of max's values
       //playerType *= -1;
       bestPath.push_back(0); //create dummy slot for next best path
+      //this->evalType *= -1; //uncomment to run alpha vs alpha
       for (int i = 0; i < playableCols.size(); i++) {
          int m = maxValue(result(gameState, playerType, playableCols.at(i)), -1*playerType, alpha, beta); //intermediate calculation
 
@@ -179,14 +181,14 @@ namespace AI {
         srand(0);
         cout << "Playing Human VS CPU with search depth=" << maxDepth << endl;
         this->gameState.setDepthPlayed(maxDepth);
-        this->evalType = -1;
+        this->evalType = 1;
         cout << "Computer is " << playerType << endl << endl;
         int humanChoice;
         int maxRounds = 21;
         // Game statistic variables
         int plyCount = 0; //increment after each player's
         int executionTime;
-        for (int i = 1; i <= maxRounds; i++) {
+        for (int i = 0; i < maxRounds; i++) {
             cout<< "********************** ROUND " << i << endl;
             auto start = high_resolution_clock::now(); //start
             s = alphaBetaSearch(this->gameState, playerType, maxDepth);
@@ -204,8 +206,8 @@ namespace AI {
             }
             playerType *= -1;
             cout << "********** Human making move" << endl;
-            this->gameState.dropPiece(playerType, i%7);
-            //cin >> humanChoice; this->gameState.dropPiece(playerType,humanChoice);
+            //this->gameState.dropPiece(playerType, i%7);
+            cin >> humanChoice; this->gameState.dropPiece(playerType,humanChoice);
             plyCount++;
             printGameBoard();
             if (this->gameState.checkWin(this->gameState)) {
