@@ -416,7 +416,7 @@ int Connect4Game::evalBAlphaBeta(int playerType, int col) {
 
    //get first nonempty row at column
    int row = 0;
-   while (this->board.at(row).at(col) != 0 && row < this->ROWS) {
+   while (row < this->ROWS && this->board.at(row).at(col) != 0) {
       row++;
    }
 
@@ -625,6 +625,9 @@ int Connect4Game::evalBMinmax(Connect4Game board,int peice)
     int ROWS=6;
     int COLS=7;
     int playerType=peice;
+
+    if(checkWin(board)==true)
+        return 1000;
       //column 3 is the best col to start with
    int middleCol = (COLS - 1) / 2;
 
