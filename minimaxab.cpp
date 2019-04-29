@@ -164,7 +164,6 @@ void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
 
 MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT,int evalType)
 {
-    int nodes1=0;
     unsigned int i;
     MiniMaxAB session;
     session.board=board;
@@ -278,7 +277,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
         {
             cout<<"\nCongratulations!!! You won the game"<<endl;
             cout<<"\nTotal length of the game: "<<gamePath<<endl;
-           cout<<"\nTotal number of nodes generated are: "<<temp.totalNodes+1;
+           cout<<"Total number of nodes generated are: "<<temp.totalNodes+1;
             cout<<"\nTotal number of nodes expanded are: "<<temp.expandedNodes+1;
             memorySize=(temp.expandedNodes+1)*nodeSize;
             cout<<"\nThe size of memory used by the program: "<<memorySize;
@@ -286,7 +285,7 @@ void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
             break;
         }
     }
-cout<<"\n\nThank You";
+cout<<"\nThank You\n\n";
 }
 
 bool MiniMaxAB::deepEnough(int d)
