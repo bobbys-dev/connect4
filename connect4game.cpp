@@ -419,7 +419,6 @@ int Connect4Game::evalBAlphaBeta(int playerType, int col) {
    while (row < this->ROWS && this->board.at(row).at(col) != 0) {
       row++;
    }
-   cout<< endl <<"evB row is " << row << " col is " << col <<  endl;
    //check if inserting piece at row will make a connection
     // score 1 for any surrounding pieces
    int surroundingPieces = 0;
