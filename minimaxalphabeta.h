@@ -25,8 +25,10 @@ class AlphaBeta {
 
 
    vector<int> bestPath; // keeps track of best path
-   vector<int> nodesGenerated;
+   vector<int> nodesGenerated; // successor columms
+   vector<int> nodesExpanded; // colums explored
    int evalType; // to set which eval type to run for alphabeta
+
     /**
     * alphaBetaSearch returns an action corresponding to best possible move
     * This function computes minimax decision from current state,

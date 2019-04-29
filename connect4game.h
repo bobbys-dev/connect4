@@ -80,17 +80,19 @@ class Connect4Game {
        int getDepthPlayed();
 
        /**
-       * Return vector of columns of which a piece may be dropped
-       * in current state.
+       * Return vector of integers columns of which a piece may be dropped
+       * in current game state.
        */
        vector<int> getOpenColumns();
 
        /**
       * Return the value at given row and col
+      * Red = 1, black = -1
       */
       int getSlotValue(int /*row*/, int /*col*/);
 
        /**
+       * Checks if connect 4 by any piece.
        * Return true if there is winning player
        */
        bool checkWin(Connect4Game /*unused*/);
@@ -98,27 +100,72 @@ class Connect4Game {
 		/**
 		* clear board of all pieces
 		*/
-        void clearBoard();
-        void printBoard ();
-        void setBoard(int[6][7] );
-        bool checkValidMove(Connect4Game,int);
-        int getScore(Connect4Game &,int , int);
+      void clearBoard();
 
-        /**
- 		* Evaluation A function for present state of board
+      /**
+      * printboard
+      */
+      void printBoard ();
+
+      /**
+      * Mutator function to set board member variable
+      * Input: int array represeting new board
+      * Postcondtion: this member's board is changed to match the input array
+      */
+      void setBoard(int[6][7]);
+
+      /**
+      * Function to check if column is valid for drop piece
+      * Input: game state, col
+      * Output: returns true if column is open
+      */
+      bool checkValidMove(Connect4Game,int /*column*/);
+
+      /**
+      * Scorees board
+      * Input: game state, row, col
+      * Output: returns weighted scoring on grid
+      */
+      int getScore(Connect4Game &,int , int);
+
+      /**
+ 		* Evaluation A function for present state of board. Unused.
  		*/
  		int evalA(Connect4Game,int);
 
  		/**
- 		* Evaluation B function for present state of board
+ 		* Evaluation B (Eval 2) function for present state of board
+      * used by Alphabeta search
+      * Input: playerType (1 = red, -1 = black), col is column to evaluate
+      * Output: Returns a scoring based on connectedness and column weight
+      * Returns highest score if there is a connect 4
  		*/
- 		int evalBAlphaBeta(int, int);
- 		int evalBMinmax(Connect4Game,int);
+ 		int evalBAlphaBeta(int /*playerType*/, int /*col*/);
+
+      /**
+ 		* Evaluation B (Eval 2) function for present state of board used by minmaxab.
+      * Input: game state to evaluate, player piece to play
+      * Output: Returns a scoring based on centrally weighted grid
+ 		*/
+ 		int evalBMinmax(Connect4Game /*board*/,int /* piece*/);
+
  		/**
- 		* Evaluation C function for present state of board
+ 		* Evaluation C (eval 1) function for present state of board
+      * using minimasab search
+      * Input: game state to evaluate, player piece to play
+      * Output: Returns a scoring based on centrally weighted grid
  		*/
  		int evalCMinmax(Connect4Game,int);
+
+      /**
+  		* Evaluation C (eval 1) function for present state of board
+       * using alphabeta search
+       * Input: playerType (1 = red, -1 = black), col is column to evaluate
+       * Output: Returns a scoring based on connectedness and column weight
+       * Returns highest score if there is a connect 4
+ 	 	*/
  		int evalCAlphaBeta(int,int);
+
         int curCol;
 	//private:
         const static int ROWS = 6;

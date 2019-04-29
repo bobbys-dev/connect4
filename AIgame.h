@@ -8,6 +8,10 @@
 using namespace std;
 namespace AI
 {
+   /**
+   * Driver class that extends with minimax and alphabeta Searches
+   * Each method runs different cpu scenarios
+   */
     class AIgame: public MiniMaxAB, public AlphaBeta
     {
         public:
