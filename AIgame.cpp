@@ -19,7 +19,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     bool win;
     this->evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(5); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(2); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<21;m++)
@@ -31,7 +31,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
-        temp = miniMaxSearch(board,depth,piece,100,-120,-1);
+        temp = miniMaxSearch(board,depth,piece,100,-120);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
@@ -187,7 +187,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
    int gameNodesExp1 = 0;
    int gameNodesExp2 = 0;
    some_struct alphabeta_search_result; //for alphabeta search results
-   this->board.setDepthPlayed(6); //set search depth for alphabeta
+   this->board.setDepthPlayed(2); //set search depth for alphabeta
    this->evalType = -1; // tell alphabeta which eval to run
    cout << "Playing Alphabeta vs Alphabeta" << endl;
    for(int m=1;m<=21;m++)
