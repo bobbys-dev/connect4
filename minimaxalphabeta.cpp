@@ -54,7 +54,7 @@ namespace AI {
                 }
 
             }
-            //bestPath.push_back(bestCol); //save best col
+            bestPath.push_back(bestCol); //save best col
             cout << "..In max with player type of " << playerType <<
             " returning minEval=" << minEval <<  endl;
             return minEval; //return max eval
