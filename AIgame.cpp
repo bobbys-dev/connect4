@@ -22,7 +22,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     this->gameState.setDepthPlayed(2); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
-    for(m=0;m<22;m++)
+    for(m=0;m<21;m++)
     {
         //***********Minmax Logic begins*********************************
         MiniMaxAB temp;
@@ -83,7 +83,6 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     }
 
     //print game statistics and end
-      cout<<"\nGame's max depth was set to: "<< depth;
       cout<<"\nTotal length of the game: "<< gamePath;
       cout<<"\nTotal number of nodes generated in MinimaxAB are: "<< (tnode +1)<<endl;
       cout<<"\nTotal number of nodes expanded in MinimaxAB are: "<< (enodes +1)<<endl;
@@ -180,7 +179,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
    int gameNodesExp1 = 0;
    int gameNodesExp2 = 0;
    some_struct alphabeta_search_result; //for alphabeta search results
-   this->board.setDepthPlayed(maxDepth); //set search depth for alphabeta
+   this->board.setDepthPlayed(1); //set search depth for alphabeta
    this->evalType = -1; // tell alphabeta which eval to run
 
    for(int m=1;m<=21;m++)
@@ -190,7 +189,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
       this->evalType *= -1; // tell alphabeta which eval to run
       piece=1;
       auto start = high_resolution_clock::now();
-      alphabeta_search_result = alphaBetaSearch(this->board,piece,maxDepth);
+      alphabeta_search_result = alphaBetaSearch(this->board,piece,1);
       auto stop = high_resolution_clock::now();
       auto duration = duration_cast<microseconds>(stop - start);
       executionTime += duration.count();

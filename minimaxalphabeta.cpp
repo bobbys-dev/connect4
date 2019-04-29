@@ -13,7 +13,7 @@ namespace AI {
 
       some_struct best;
       best.value = maxValue(gameState, playerType, INT_MIN, INT_MAX);
-
+      cout << nodesGenerated.size();
       //return action in _ACTIONS(gameState) with value v
      return best;
   }
@@ -72,7 +72,6 @@ namespace AI {
          // if m is higher, that means playableCols(i) is the max of min so far
          if (v < m) {
             v = m;
-            //bestPath.push_back(playableCols.at(i));
          }
 
          //beta is a cutoff value
@@ -126,7 +125,6 @@ namespace AI {
           // choose min of v or m
          if (m < v){
             v = m;
-            //bestPath.push_back(playableCols.at(i));
          }
 
          if (v <= alpha) {
@@ -143,18 +141,17 @@ namespace AI {
    /**
    * result(s,a) is transition model that defines result of doing action a
    * in a state s. It returns a successor state.
-   * Eg Result(In(Arad),Go(Zerind)) = In(Zerind)
+   * Eg Result(In(Here),Go(There)) = In(There)
    */
    Connect4Game AlphaBeta::result(
       Connect4Game gameState, int playerType, int col) {
          gameState.dropPiece(playerType, col);
-         //gameState.printBoard();
          return gameState;
    }
 
    /**
    * Actions(s) returns vector set of legal moves in a state s.
-   * Eg Actions(In(Arad)) = {Go(Sibiu),Go(Timisora),Go(Zerind)}
+   * Eg Actions(In(Here)) = {Go(ThereA),Go(ThereB),Go(ThereC)}
    */
    vector<int> AlphaBeta::actions(Connect4Game gameState) {
       vector<int> playableCols;
@@ -174,7 +171,6 @@ namespace AI {
    **/
    void AlphaBeta::printGameBoard() {
        this->gameState.printBoard();
-
    }
 
   /**
