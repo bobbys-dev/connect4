@@ -17,6 +17,7 @@ class MiniMaxAB{
          vector<MiniMaxAB> child;
          vector<MiniMaxAB> bestPathMinmaxAB;
          int totalNodes=0;
+         int expandedNodes=0;
         MiniMaxAB();
          /** Function for Human vs Computer using MinmaxAB */
         void humanVsComputerMinimaxAB(int,int);

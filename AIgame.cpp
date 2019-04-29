@@ -8,11 +8,8 @@ using namespace std;
 using namespace std::chrono;
 using namespace AI;
 
-static int gamePath=0;
-static int executionTime=0;
-static int nodes=0;
+static int gamePath=0,executionTime=0,tnode=0,enodes=0;
 static int nodes2=0;
-
 void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 {
     MiniMaxAB temp;
@@ -20,7 +17,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     bool win;
     this->evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(5); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(2); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<22;m++)
@@ -36,7 +33,8 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes=temp.totalNodes;
+        tnode=temp.totalNodes;
+        enodes=temp.expandedNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -83,9 +81,10 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 
     //print game statistics and end
       cout<<"\nTotal length of the game: "<< gamePath;
-      cout<<"\nTotal number of nodes generated and expanded for MinimaxAB are: "<< (nodes +1)<<endl;
+      cout<<"\nTotal number of nodes generated in MinimaxAB are: "<< (tnode +1)<<endl;
+      cout<<"\nTotal number of nodes expanded in MinimaxAB are: "<< (enodes +1)<<endl;
       cout<<"\nTotal number of nodes generated and expanded for AlphaBetaSearch are: "<< nodes2 << endl ;
-      memorySize1=(nodes+1)*nodeSize;
+      memorySize1=(enodes+1)*nodeSize;
       memorySize2= nodes2;
       cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
       cout<<"\nThe size of memory used by the AlphaBetaSearch: "<< memorySize2;
@@ -110,7 +109,8 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes=temp1.totalNodes;
+        tnode=temp1.totalNodes;
+        enodes=temp1.expandedNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -137,7 +137,8 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        nodes=temp2.totalNodes;
+        tnode=temp2.totalNodes;
+        enodes=temp2.expandedNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -159,8 +160,9 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
 
     //print game statistics and end
       cout<<"\nTotal length of the game: "<< gamePath;
-      cout<<"\nTotal number of nodes generated and expanded for MinimaxAB are: "<< (nodes +1)<<endl;
-      memorySize1=(nodes+1)*nodeSize;
+      cout<<"\nTotal number of nodes generated in MinimaxAB are: "<< (tnode +1)<<endl;
+      cout<<"\nTotal number of nodes expanded in MinmaxAB(Eval1) are: "<< (enodes +1)<<endl;
+      memorySize1=(enodes)*nodeSize;
       cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
       cout <<"\nExecution time: "<< executionTime << endl;
 }
