@@ -1,62 +1,315 @@
 #include "MiniMaxAB.h"
 #include<bits/stdc++.h>
+#include<vector>
+#include <chrono>
 
 using namespace std;
-namespace AB {
+using namespace std::chrono;
+static int t,e;
+namespace AI {
+
+static int gamePath=0;
+static int executionTime=0;
 MiniMaxAB::MiniMaxAB() {
     //initialize any internal member variables
 }
+//vector<MiniMaxAB> bestPath;
+bool MiniMaxAB::checkWinBoard(Connect4Game board)
+{
+    bool a;
+    a=this->board.checkWin(board);
+    return a;
+}
 
-int MiniMaxAB::miniMaxSearch(int depth, int piece,int A,int B)
-{//Need to implement MinimaxAB algorithm
+bool MiniMaxAB::checkValidMoveBoard(Connect4Game board,int column)
+{
+    bool b;
+    b=this->board.checkValidMove(board,column);
+    return b;
+}
+
+void MiniMaxAB::Eval(MiniMaxAB &session, int piece,int evalType)
+{
+    if(evalType==1)
+    {
+        session.value=this->board.evalCMinmax(session.board,piece);
+
+    }
+    else
+        session.value=this->board.evalBMinmax(session.board,piece);
+}
+
+void MiniMaxAB::MoveGen(MiniMaxAB &session,int piece)
+{
+    int i,j=0;
+    MiniMaxAB session1;
+    session1.board=session.board;
+    if(j==0)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+    }
+    session1.board=session.board;
+    j++;
+    if(j==1)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1 && j==1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+
+    }
+    j++;
+    session1.board=session.board;
+    if(j==2)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+
+    }
+    j++;
+    session1.board=session.board;
+    if(j==3)
+    {
+      for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+    }
+    j++;
+    session1.board=session.board;
+    if(j==4)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+
+    }
+    j++;
+    session1.board=session.board;
+    if(j==5)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+
+    }
+    j++;
+
+    session1.board=session.board;
+    if(j==6)
+    {
+        for(i=0;i<6;i++)
+            {
+                if(session1.board.getSlotValue(i,j)==0 && session1.board.getSlotValue(i,j)!=-1 && session1.board.getSlotValue(i,j)!=1)
+                {
+                    t++;
+                    session1.board.dropPiece(piece,j);
+                    session1.board.curCol=j;
+                    child.push_back(session1);
+                    break;
+                }
+            }
+    }
+}
+
+
+MiniMaxAB MiniMaxAB::miniMaxSearch(Connect4Game& board,int depth, int piece,int UT,int PT,int evalType)
+{
+    unsigned int i;
+    MiniMaxAB session;
+    session.board=board;
     if(deepEnough(depth))
     {
-        return 1;//Code need to be changed
+        Eval(session,piece,evalType);
+        if(piece==-1)
+            session.value*=-1;
+        session.totalNodes=t;
+        return session;
     }
-    int bestValue;
-    if(piece==1)//Maximizing Player
+
+    session.MoveGen(session,piece);
+    //cout<<"\nThe child size is:"<<session.child.size()<<endl;
+    if(session.child.size()==0)
     {
-        bestValue=INT_MIN;
-
-
-
+        Eval(session,piece,evalType);
+        if(piece==-1)
+            session.value*=-1;
+        session.totalNodes=t;
+        return session;
     }
-    else//Minimising Player
+    for(i=0;i<session.child.size();i++)
     {
-        bestValue=INT_MAX;
-
+        MiniMaxAB Successor= miniMaxSearch(session.child[i].board,depth+1,(-1*piece),(-1*PT),(-1*UT),evalType);
+        int newValue=-1*Successor.value;
+        if(newValue > PT)
+            {
+                PT = newValue;
+                if(depth == 0)
+                bestPathMinmaxAB.push_back(session.child[i]);
+                e++;
+            }
+        if(PT >= UT)
+            {
+                session.child[i].value=PT;
+                e++;
+                session.child[i].totalNodes=t;
+                session.child[i].expandedNodes=e;
+                return session.child[i];
+            }
     }
-
-    return 0;
+    session.totalNodes=t;
+    session.expandedNodes=e;
+	session.value=PT;
+	return session;
 }
-void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int piece)
+
+void MiniMaxAB::humanVsComputerMinimaxAB(int depth,int peice)
 {
-    int i=1;
+    MiniMaxAB temp;
+    int m;
     int columnNumber;
-    while(i<=42)
+    bool win;
+    int memorySize,nodeSize=43;
+    for(m=0;m<22;m++)
     {
-        columnNumber = miniMaxSearch(depth,piece,100,-120);
-        this->board.dropPiece(columnNumber,piece);
-        cout<<"\nThe board position after computer's turn"<<endl;
+        int pass[6][7];
+        peice=1;
+        win=false;
+        bestPathMinmaxAB.clear();
+        auto start = high_resolution_clock::now();
+        temp = miniMaxSearch(board,depth,peice,100,-120);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        executionTime+=duration.count();
+//        cout<<"\ntemp.value"<<temp.value;
+//        cout<<"\n\nAfter executing Minimax Search in humanVsComputer"<<endl;
+//        cout<<"temp.col"<<temp.col<<endl;
+//        this->board.dropPiece(peice,temp.col);
+        for(int i=0;i<6;i++)
+		{
+			for(int j=0;j<7;j++)
+			{
+				//find child with move 0 and then store it into board
+				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
+			}
+		}
+		setBoard1(pass);
+        cout<<"\nThe board position after computer's turn is"<<endl;
         this->board.printBoard();
-        checkWin();
-        cout<<"\nYour turn, enter the column number you want to drop the coin:\n";
+        gamePath++;
+        win=checkWinBoard(board);
+        if(win)
+        {
+            cout<<"\nAI(MinmaxAB) won the game!! Better luck next time"<<endl;
+            cout<<"\nTotal length of the game: "<<gamePath;
+            cout<<"\nTotal number of nodes generated are: "<<temp.totalNodes+1;
+            cout<<"\nTotal number of nodes expanded are: "<<temp.expandedNodes+1;
+            memorySize=(temp.expandedNodes+1)*nodeSize;
+            cout<<"\nThe size of memory used by the program: "<<memorySize;
+            cout <<"\nExecution time: "<< executionTime << endl;
+            break;
+        }
+        peice=-1;
+        win=false;
+        cout<<"\nYour turn, Enter the column number you want to drop the coin:\n"<<endl;
         cin>>columnNumber;
-        this->board.dropPiece(columnNumber,piece);
+        bool valid=checkValidMoveBoard(board,columnNumber);
+        if(!valid)
+        {
+            cout<<"\nInvalid column number,Enter the valid column number again:\n";
+            cin>>columnNumber;
+        }
+        this->board.dropPiece(peice,columnNumber);
+         cout<<"\nThe board position after your(Human) turn is"<<endl;
         this->board.printBoard();
-        checkWin();
-        i++;
+        gamePath++;
+        win=checkWinBoard(board);
+        if(win)
+        {
+            cout<<"\nCongratulations!!! You won the game"<<endl;
+            cout<<"\nTotal length of the game: "<<gamePath<<endl;
+           cout<<"Total number of nodes generated are: "<<temp.totalNodes+1;
+            cout<<"\nTotal number of nodes expanded are: "<<temp.expandedNodes+1;
+            memorySize=(temp.expandedNodes+1)*nodeSize;
+            cout<<"\nThe size of memory used by the program: "<<memorySize;
+            cout <<"\nExecution time: "<< executionTime << endl;
+            break;
+        }
     }
+cout<<"\nThank You\n\n";
 }
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 3;
+    return d >= 5;
 }
 
-void MiniMaxAB::checkWin()
+void MiniMaxAB::printGameBoard()
 {
- //add check win logic
+   this->board.printBoard();
+}
+void MiniMaxAB::clearGameBoard()
+{
+    this->board.clearBoard();
+}
+
+int MiniMaxAB::getSlotValueBoard(int x,int y)
+{
+    return this->board.getSlotValue(x,y);
+}
+
+void MiniMaxAB::setBoard1(int a[6][7])
+{
+    this->board.setBoard(a);
 }
 
 } //end namespace AB

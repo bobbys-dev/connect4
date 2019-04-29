@@ -32,6 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="AIgame.cpp" />
+		<Unit filename="AIgame.h" />
+		<Unit filename="MinimaxAB.cpp" />
+		<Unit filename="MinimaxAB.h" />
 		<Unit filename="connect4game.cpp" />
 		<Unit filename="connect4game.h" />
 		<Unit filename="main.cpp" />

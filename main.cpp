@@ -1,28 +1,52 @@
 #include <iostream>
+#include "minimaxalphabeta.h"
+#include "MinimaxAB.h"
 #include "connect4game.h"
-using namespace std;
+#include "AIgame.h"
 
+using namespace std;
+using namespace AI;
 int main()
 {
-    std::cout << "Hello World\n";
-    Connect4Game board;
-    int player = 1;
 
-    cout << "Test 1: filling up board with alternating pieces\n";
-    for (int turn = 0; turn < 42; turn++){
-        cout<<"Turn " << turn << "\n";
-        board.dropPiece(player,turn%7);
-        board.printBoard();
-        player *= -1;
+    int choice;
+    cout<<"\nCONNECT FOUR GAME"<<endl;
+    cout<<"\nEnter the mode from the following:\n1.Human vs Computer(MinimaxAB)\n2.Human vs Computer(AlphaBeta)\n3. Computer(MinmaxAB) vs Computer(Alphabeta)\n4. Computer(MinmaxAB) vs Computer(MinmaxAB)\n5. Computer(Alphabeta) Vs Computer(Alphabeta)\n";
+    cin>>choice;
+
+    if(choice==1)
+    {
+        MiniMaxAB minimaxab_session;
+        minimaxab_session.clearGameBoard();
+        cout<<"\nComputer's turn..."<<endl;
+        minimaxab_session.humanVsComputerMinimaxAB(0,1);
     }
-    cout << board.getConnectedReds();
-    board.clearBoard();
-    cout << "Test 2: Randomly playing 100 turns\n";
-    for (int turn = 0; turn < 100; turn++){
-        cout<<"Turn " << turn << "\n";
-        board.makeRandomMove(player);
-        board.printBoard();
-        player *= -1;
+    else if(choice==2)
+    {
+   //alpha beta
+      AlphaBeta alphabeta_session;
+      alphabeta_session.humanVsComputerAlphaBeta(0,1);
+    }
+    else if(choice==3)
+    {
+        AIgame aiGame_session;
+        aiGame_session.MinmaxVsAlphabeta(0,1);
+   }
+    else if(choice==4)
+    {
+        AIgame aiGame_session;
+        aiGame_session.MinmaxVsMinmax(0,1);
+    }
+    else if(choice==5)
+    {
+      AIgame aiGame_session;
+      aiGame_session.AlphaBetaVsAlphaBeta(0,1);
+      //be sure to set evalType in alphabeta module
+    }
+    else
+    {
+        cout<<"Invalid choice";
+        exit(0);
     }
 
     return 0;
