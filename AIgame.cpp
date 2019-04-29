@@ -19,7 +19,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     bool win;
     this->evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(8); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(5); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<21;m++)
@@ -31,7 +31,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         piece=1;
         bestPathMinmaxAB.clear();
         auto start = high_resolution_clock::now();
-        temp = miniMaxSearch(board,depth,piece,100,-120);
+        temp = miniMaxSearch(board,depth,piece,100,-120,-1);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
@@ -45,7 +45,8 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
 				pass[i][j] = bestPathMinmaxAB[bestPathMinmaxAB.size() -1].board.getSlotValue(i,j);
 			}
 		}
-		setBoard1(pass);
+    	  setBoard1(pass);
+        cout << "Player 1 will make the following move: " << endl;
         this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
@@ -66,6 +67,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
+        cout << "Player 2 will make the following move at column " << this->bestPath.back() << endl;
         this->board.dropPiece(piece, this->bestPath.back());
         gameNodesGen += nodesGenerated.size();
         gameNodesExp += nodesExpanded.size();
@@ -124,7 +126,8 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
 			}
 		}
 		setBoard1(pass);
-        this->board.printBoard();
+      cout << "Player 1 will make the following move: " << endl;
+       this->board.printBoard();
         gamePath++;
         win=checkWinBoard(board);
         if(win)
@@ -152,12 +155,13 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
 			}
 		}
 		setBoard1(pass);
-        this->board.printBoard();
-        gamePath++;
-        win=checkWinBoard(board);
+      cout << "Player 2 will make the following move: " << endl;
+      this->board.printBoard();
+      gamePath++;
+      win=checkWinBoard(board);
         if(win)
         {
-           cout<<"\nMinmaxAB(Eval2) methodology won! \n GAME OVER"<<endl;
+           cout<<"\nMinmaxAB (Eval2) methodology won! \n GAME OVER"<<endl;
             break; //stop game
         }
     }
@@ -183,9 +187,9 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
    int gameNodesExp1 = 0;
    int gameNodesExp2 = 0;
    some_struct alphabeta_search_result; //for alphabeta search results
-   this->board.setDepthPlayed(8); //set search depth for alphabeta
+   this->board.setDepthPlayed(6); //set search depth for alphabeta
    this->evalType = -1; // tell alphabeta which eval to run
-
+   cout << "Playing Alphabeta vs Alphabeta" << endl;
    for(int m=1;m<=21;m++)
    {
       cout << "Round " << m << endl;
@@ -200,9 +204,9 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
       this->board.dropPiece(piece, this->bestPath.back());
       gameNodesGen1 += nodesGenerated.size();
       gameNodesExp1 += nodesExpanded.size();
-      vector<int> ng;
-      nodesGenerated = ng; // reset nodes generated
-      nodesExpanded = ng;
+      nodesGenerated.clear(); // reset nodes generated
+      nodesExpanded.clear();
+      cout << "Player 1 will make the following move at column " << this->bestPath.back() << endl;
       this->board.printBoard();
       gamePath++;
       if(checkWinBoard(board))
@@ -213,7 +217,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
 
       //***********Player 1 Logic ends***********************************
 
-      //***********Alphabeta Logic begins******************************
+      //***********Player 2 Logic begins******************************
       this->evalType *= -1; // tell alphabeta which eval to run
       piece=-1;
       start = high_resolution_clock::now();
@@ -226,6 +230,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
       gameNodesExp2 += nodesExpanded.size();
       nodesGenerated.clear(); // reset nodes generated
       nodesExpanded.clear();
+      cout << "Player 2 will make the following move at column " << this->bestPath.back() << endl;
       this->board.printBoard();
       gamePath++;
       if(checkWinBoard(board))
@@ -233,21 +238,20 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
          cout<<"\nEvaluation function 2 won! \n GAME OVER"<<endl;
          break; //stop game
       }
-      //***********Alphabeta Logic ends********************************
+      //***********Player 2 Logic ends********************************
    }
 
    //print game statistics and end
-   cout<<"\nGame's max depth was set to: "<< maxDepth;
    cout<<"\nTotal length of the game: "<< gamePath;
-     cout<<"\nTotal number of nodes generated for Eval 1: "<< gameNodesGen1 <<endl;
-     cout<<"\nTotal number of nodes generated for Eval 2: "<< gameNodesGen2 << endl;
-     cout<<"\nTotal number of nodes expanded for Eval 1: "<< gameNodesExp1 <<endl;
-     cout<<"\nTotal number of nodes expanded for Eval 2: "<< gameNodesExp2 << endl;
-     int memorySize1= gameNodesExp1;
-     int memorySize2= gameNodesExp2;
-     cout<<"\nThe size of memory used by Eval 1: "<< memorySize1;
-     cout<<"\nThe size of memory used by Eval 2: "<< memorySize2;
-     cout <<"\nExecution time: "<< executionTime << endl;
+   cout<<"\nTotal number of nodes generated for Eval 1: "<< gameNodesGen1 <<endl;
+   cout<<"\nTotal number of nodes generated for Eval 2: "<< gameNodesGen2 << endl;
+   cout<<"\nTotal number of nodes expanded for Eval 1: "<< gameNodesExp1 <<endl;
+   cout<<"\nTotal number of nodes expanded for Eval 2: "<< gameNodesExp2 << endl;
+   int memorySize1= gameNodesExp1;
+   int memorySize2= gameNodesExp2;
+   cout<<"\nThe size of memory used by Eval 1: "<< memorySize1;
+   cout<<"\nThe size of memory used by Eval 2: "<< memorySize2;
+   cout <<"\nExecution time: "<< executionTime << endl;
 
 
 }

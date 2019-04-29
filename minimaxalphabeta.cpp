@@ -65,7 +65,7 @@ namespace AI {
       // must decrement current depth before next set of recursive calls
       //switch player over for calcuations
       //for each possible column, get the highest of min's choices
-      //this->evalType *= -1; //uncomment to run alpha vs alpha
+     //this->evalType *= -1; //uncomment to run alpha vs alpha
       for (int i = 0; i < playableCols.size(); i++) {
          int m = minValue(result(gameState, playerType, playableCols.at(i)), -1*playerType, alpha, beta); //intermediate calculation
          // choose max of v or m
