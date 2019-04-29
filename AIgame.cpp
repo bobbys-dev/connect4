@@ -8,7 +8,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace AI;
 
-static int gamePath=0,executionTime=0,tnode=0,enodes=0;
+static int gamePath=0,executionTime=0,tnode=0,enodes=0,tnode2=0,enodes2=0;
 static int gameNodesGen=0;
 static int gameNodesExp=0;
 
@@ -19,7 +19,7 @@ void AIgame::MinmaxVsAlphabeta(int depth,int piece)
     bool win;
     this->evalType = 1; // tell alphabeta which eval to run
     some_struct alphabeta_search_result; //for alphabeta search results
-    this->gameState.setDepthPlayed(2); //set search depth for alphabeta
+    this->gameState.setDepthPlayed(8); //set search depth for alphabeta
     int memorySize1,memorySize2,nodeSize=43;
 
     for(m=0;m<21;m++)
@@ -141,8 +141,8 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
         stop = high_resolution_clock::now();
         duration = duration_cast<microseconds>(stop - start);
         executionTime+=duration.count();
-        tnode=temp2.totalNodes;
-        enodes=temp2.expandedNodes;
+        tnode2=temp2.totalNodes;
+        enodes2=temp2.expandedNodes;
         for(int i=0;i<6;i++)
 		{
 			for(int j=0;j<7;j++)
@@ -164,10 +164,14 @@ void AIgame::MinmaxVsMinmax(int depth,int piece)
 
     //print game statistics and end
       cout<<"\nTotal length of the game: "<< gamePath;
-      cout<<"\nTotal number of nodes generated in MinimaxAB are: "<< (tnode +1)<<endl;
+      cout<<"\nTotal number of nodes generated in MinimaxAB(Eval1) are: "<< (tnode +1)<<endl;
       cout<<"\nTotal number of nodes expanded in MinmaxAB(Eval1) are: "<< (enodes +1)<<endl;
+      cout<<"\nTotal number of nodes generated in MinimaxAB(Eval2) are: "<< (tnode2 +1)<<endl;
+      cout<<"\nTotal number of nodes expanded in MinmaxAB(Eval2) are: "<< (enodes2 +1)<<endl;
       memorySize1=(enodes)*nodeSize;
-      cout<<"\nThe size of memory used by the MinimaxAB: "<< memorySize1;
+      memorySize2=(enodes2)*nodeSize;
+      cout<<"\nThe size of memory used by the MinimaxAB(Eval1): "<< memorySize1;
+      cout<<"\nThe size of memory used by the MinimaxAB(Eval2): "<< memorySize2;
       cout <<"\nExecution time: "<< executionTime << endl;
 }
 
@@ -179,7 +183,7 @@ void AIgame::AlphaBetaVsAlphaBeta(int maxDepth,int piece)
    int gameNodesExp1 = 0;
    int gameNodesExp2 = 0;
    some_struct alphabeta_search_result; //for alphabeta search results
-   this->board.setDepthPlayed(1); //set search depth for alphabeta
+   this->board.setDepthPlayed(8); //set search depth for alphabeta
    this->evalType = -1; // tell alphabeta which eval to run
 
    for(int m=1;m<=21;m++)

@@ -290,7 +290,7 @@ cout<<"\nThank You\n\n";
 
 bool MiniMaxAB::deepEnough(int d)
 {
-    return d >= 1;
+    return d >= 2;
 }
 
 void MiniMaxAB::printGameBoard()
@@ -307,7 +307,7 @@ int MiniMaxAB::getSlotValueBoard(int x,int y)
     return this->board.getSlotValue(x,y);
 }
 
-void MiniMaxAB::setBoard1(int a[6][7] )
+void MiniMaxAB::setBoard1(int a[6][7])
 {
     this->board.setBoard(a);
 }
